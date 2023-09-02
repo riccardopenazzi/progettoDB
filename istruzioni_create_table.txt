@@ -18,8 +18,8 @@ CREATE TABLE Indirizzi (
 );
 
 
--- Creazione della tabella Carte_fedeltà
-CREATE TABLE Carte_fedeltà (
+-- Creazione della tabella Carte_fedelta
+CREATE TABLE Carte_fedelta (
     codCarta INT AUTO_INCREMENT PRIMARY KEY,
     punti INT DEFAULT 0
 );
@@ -117,10 +117,10 @@ CREATE TABLE Assegnazioni (
 -- Creazione della tabella Appartenenze
 CREATE TABLE Appartenenze (
     utente INT,
-    cartaFedeltà INT,
+    cartaFedelta INT,
     FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
-    FOREIGN KEY (cartaFedeltà) REFERENCES Carte_fedeltà(codCarta),
-    UNIQUE KEY (cartaFedeltà)
+    FOREIGN KEY (cartaFedelta) REFERENCES Carte_fedelta(codCarta),
+    UNIQUE KEY (cartaFedelta)
 );
 
 -- Creazione della tabella Utilizzi_coupon
