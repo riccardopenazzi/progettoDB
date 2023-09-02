@@ -1,0 +1,481 @@
+-- inserimento utenti:
+-- admin 
+INSERT INTO Utenti (nome, cognome, email, telefono, password, tipo)
+VALUES ('NomeAdmin', 'CognomeAdmin', 'admin@email.com', '1234567890', 'password', 'admin');
+
+
+-- Primo Pizzaiolo
+INSERT INTO Utenti (nome, cognome, email, telefono, password, tipo)
+VALUES ('NomePizzaiolo1', 'CognomePizzaiolo1', 'pizzaiolo1@email.com', '1234567891', 'password', 'pizzaiolo');
+
+-- Primo Rider
+INSERT INTO Utenti (nome, cognome, email, telefono, password, tipo)
+VALUES ('NomeRider1', 'CognomeRider1', 'rider1@email.com', '1234567893', 'password', 'rider');
+
+-- Aiuto Cuoco
+INSERT INTO Utenti (nome, cognome, email, telefono, password, tipo)
+VALUES ('NomeAiutoCuoco', 'CognomeAiutoCuoco', 'aiutocuoco@email.com', '1234567895', 'password', 'aiuto_cuoco');
+
+-- Cliente 1
+INSERT INTO Utenti (nome, cognome, email, telefono, password, tipo)
+VALUES ('NomeCliente1', 'CognomeCliente1', 'cliente1@email.com', '1234567896', 'password', 'cliente');
+
+--inserire indirizzi:
+INSERT INTO Indirizzi (via, numero, comune)
+VALUES
+    ('Giovanni XXIII', 18, 'Imola'),
+    ('Fratelli Cairoli', 89, 'Imola'),
+    ('Aldo Moro', 50, 'Conselice'),
+    ('Giuseppe Verdi', 16, 'Conselice'),
+    ('Fratelli d\'Italia', 104, 'Massa Lombarda'),
+    ('Ines Benati', 56, 'Conselice'),
+    ('Martiri della Libertà', 199, 'Massa Lombarda'),
+    ('Arturo il bello', 7, 'Imola');
+
+
+-- Inserire nuova domiciliazione
+-- Prima di inserire qualcosa in domiciliazioni devo ovviamente inserire l'indirizzo in indirizzi
+INSERT INTO Indirizzi (via, numero, comune)
+VALUES ('Paolo fabbri', 13, 'Altro comune');
+
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (10, 'Paolo fabbri', 13, 'Altro comune');
+
+
+-- Utente 7, via 1
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (7, 'Giovanni XXIII', 18, 'Imola');
+
+-- Utente 8, via 2
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (8, 'Fratelli Cairoli', 89, 'Imola');
+
+-- Utente 9, via 3 e 4
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (9, 'Aldo Moro', 50, 'Conselice'),
+       (9, 'Giuseppe Verdi', 16, 'Conselice');
+
+-- Utente 10, via 5
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (10, 'Fratelli d\'Italia', 104, 'Massa Lombarda');
+
+-- Utente 11, via 6
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (11, 'Ines Benati', 56, 'Conselice');
+
+-- Utente 12, via 7 e 8
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (12, 'Martiri della Libertà', 199, 'Massa Lombarda'),
+       (12, 'Arturo il bello', 7, 'Imola');
+
+-- Utente 13, via 9
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (13, 'Giovanni XXIII', 18, 'Imola');
+
+-- Utente 14, via 10
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (14, 'Fratelli Cairoli', 89, 'Imola');
+
+-- Utente 15, via 11 e 12
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (15, 'Aldo Moro', 50, 'Conselice'),
+       (15, 'Giuseppe Verdi', 16, 'Conselice');
+
+-- Utente 16, via 13
+INSERT INTO Domiciliazioni (utente, via, numero, comune)
+VALUES (16, 'Fratelli d\'Italia', 104, 'Massa Lombarda');
+
+
+-- Selezionare tutti gli indirizzi di un cliente
+SELECT via, numero, comune
+FROM Domiciliazioni
+WHERE utente = 7;
+
+-- Selezionare tutti i clienti che vivono in un indirizzo (es condominio)
+SELECT utente
+FROM Domiciliazioni
+WHERE via = 'Aldo moro' AND numero = 50 AND comune = 'ComuneNuovo';
+
+-- Inserimento pizza senza specificare "presente" perchè tanto è default true
+INSERT INTO Pizze (nome, prezzoBase)
+VALUES ('Prosciutto Crudo', 10.50);
+
+INSERT INTO Pizze (nome, prezzoBase)
+VALUES
+    ('margherita', 4.5),
+    ('cipolla', 5.5),
+    ('romana', 6),
+    ('salamino', 5.5),
+    ('prosciutto cotto', 5.5),
+    ('tonno', 6.5),
+    ('bufala', 6.5),
+    ('capricciosa', 7),
+    ('funghi porcini', 7.5),
+    ('funghi trifolati', 5.5),
+    ('funghi freschi', 5.5),
+    ('quattro formaggi', 7),
+    ('contadina', 8),
+    ('montanara', 8.5),
+    ('energica', 9),
+    ('esplosiva', 9.5),
+    ('tirolese', 7.5),
+    ('montebaldo', 7);
+
+-- inserire un ingrediente
+INSERT INTO Ingredienti (nome, prezzo)
+VALUES ('Pomodoro', 1.5);
+
+-- Inserimento degli ingredienti
+INSERT INTO Ingredienti (nome, prezzo)
+VALUES
+    ('mozzarella', 1.5),
+    ('pomodoro', 1),
+    ('cipolla', 1.5),
+    ('capperi', 1.5),
+    ('acciughe', 1.5),
+    ('salame dolce', 1.5),
+    ('prosciutto cotto', 1.5),
+    ('tonno', 2),
+    ('mozzarella di bufala', 2.5),
+    ('carciofi', 1.5),
+    ('funghi freschi', 1.5),
+    ('funghi porcini', 2.5),
+    ('funghi trifolati', 1.5),
+    ('emmenthal', 1.5),
+    ('brie', 1.5),
+    ('gorgonzola', 1.5),
+    ('salsiccia', 2),
+    ('patate al forno', 1.5),
+    ('speck', 2),
+    ('rucola', 1.5),
+    ('scaglie di grana', 2),
+    ('prosciutto crudo', 2),
+    ('radicchio', 1.5),
+    ('bruciatini', 2),
+    ('aceto balsamico', 1.5);
+
+
+-- associare pizza agli ingredienti
+-- Associazione di un ingrediente a una pizza
+INSERT INTO Farciture (pizza, ingrediente)
+VALUES ('Margherita', 'mozzarella');
+
+
+-- Associazione degli ingredienti alle pizze
+INSERT INTO Farciture (pizza, ingrediente) VALUES
+    ('Margherita', 'pomodoro'),
+    ('Margherita', 'mozzarella'),
+    
+    ('Cipolla', 'pomodoro'),
+    ('Cipolla', 'mozzarella'),
+    ('Cipolla', 'cipolla'),
+    
+    ('Romana', 'pomodoro'),
+    ('Romana', 'mozzarella'),
+    ('Romana', 'acciughe'),
+    ('Romana', 'capperi'),
+    
+    ('Salamino', 'pomodoro'),
+    ('Salamino', 'mozzarella'),
+    ('Salamino', 'salame dolce'),
+    
+    ('Prosciutto Cotto', 'pomodoro'),
+    ('Prosciutto Cotto', 'mozzarella'),
+    ('Prosciutto Cotto', 'prosciutto cotto'),
+    
+    ('Tonno', 'pomodoro'),
+    ('Tonno', 'mozzarella'),
+    ('Tonno', 'tonno'),
+    
+    ('Bufala', 'pomodoro'),
+    ('Bufala', 'mozzarella di bufala'),
+    
+    ('Capricciosa', 'pomodoro'),
+    ('Capricciosa', 'mozzarella'),
+    ('Capricciosa', 'carciofi'),
+    ('Capricciosa', 'funghi freschi'),
+    ('Capricciosa', 'prosciutto cotto'),
+    
+    ('Funghi Porcini', 'pomodoro'),
+    ('Funghi Porcini', 'mozzarella'),
+    ('Funghi Porcini', 'funghi porcini'),
+    
+    ('Funghi Trifolati', 'pomodoro'),
+    ('Funghi Trifolati', 'mozzarella'),
+    ('Funghi Trifolati', 'funghi trifolati'),
+    
+    ('Funghi Freschi', 'pomodoro'),
+    ('Funghi Freschi', 'mozzarella'),
+    ('Funghi Freschi', 'funghi freschi'),
+    
+    ('Quattro Formaggi', 'pomodoro'),
+    ('Quattro Formaggi', 'mozzarella'),
+    ('Quattro Formaggi', 'emmenthal'),
+    ('Quattro Formaggi', 'brie'),
+    ('Quattro Formaggi', 'gorgonzola'),
+    
+    ('Contadina', 'pomodoro'),
+    ('Contadina', 'mozzarella'),
+    ('Contadina', 'salsiccia'),
+    ('Contadina', 'patate al forno'),
+    ('Contadina', 'cipolla'),
+    
+    ('Montanara', 'pomodoro'),
+    ('Montanara', 'mozzarella'),
+    ('Montanara', 'speck'),
+    ('Montanara', 'rucola'),
+    ('Montanara', 'scaglie di grana'),
+    
+    ('Energica', 'pomodoro'),
+    ('Energica', 'mozzarella'),
+    ('Energica', 'funghi freschi'),
+    ('Energica', 'prosciutto cotto'),
+    ('Energica', 'rucola'),
+    ('Energica', 'scaglie di grana'),
+    
+    ('Esplosiva', 'pomodoro'),
+    ('Esplosiva', 'mozzarella'),
+    ('Esplosiva', 'patate al forno'),
+    ('Esplosiva', 'funghi porcini'),
+    ('Esplosiva', 'speck'),
+    
+    ('Tirolese', 'pomodoro'),
+    ('Tirolese', 'mozzarella'),
+    ('Tirolese', 'brie'),
+    ('Tirolese', 'speck'),
+    
+    ('Montebaldo', 'pomodoro'),
+    ('Montebaldo', 'mozzarella'),
+    ('Montebaldo', 'radicchio'),
+    ('Montebaldo', 'bruciatini'),
+    ('Montebaldo', 'aceto balsamico');
+
+
+-- query per vedere tutto il menù
+SELECT Pizze.nome AS Pizza, GROUP_CONCAT(Ingredienti.nome ORDER BY Farciture.ingrediente ASC SEPARATOR ', ') AS Ingredienti
+FROM Pizze
+LEFT JOIN Farciture ON Pizze.nome = Farciture.pizza
+LEFT JOIN Ingredienti ON Farciture.ingrediente = Ingredienti.nome
+GROUP BY Pizze.nome;
+
+-- query per vedere tutte le pizze che contengono un certo ingrediente
+SELECT Pizze.nome AS Pizza, GROUP_CONCAT(Ingredienti.nome) AS Ingredienti
+FROM Pizze
+INNER JOIN Farciture ON Pizze.nome = Farciture.pizza
+INNER JOIN Ingredienti ON Farciture.ingrediente = Ingredienti.nome
+WHERE Pizze.nome IN (
+    SELECT pizza
+    FROM Farciture
+    WHERE ingrediente = 'speck' -- Sostituisci con l'ingrediente che desideri cercare
+)
+GROUP BY Pizze.nome;
+
+
+
+PER INSERIRE UN ORDINE
+
+1) creo istanza Tempi
+
+-- Inserisci l'orario di ritiro
+INSERT INTO Tempi (orario) VALUES ('2023-09-01 20:30:00');
+
+
+2) inserisco ordine con quei tempi
+
+INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)
+VALUES (
+    (SELECT SUM(prezzoBase) FROM Pizze WHERE nome IN ('Margherita', 'Quattro Formaggi')),
+    'In attesa',
+    FALSE,
+    1, -- Sostituisci con l'ID del cliente che effettua l'ordine
+    '2023-09-01 20:30:00', -- Orario di ritiro
+    '2023-09-01 19:43:00',  -- Orario di effettuazione
+    'ritiro'
+);
+
+3) inserisci pizze nell'ordine
+
+-- Inserisci le pizze nell'ordine specificato
+INSERT INTO Composizioni (ordine, pizza)
+SELECT
+    2, -- Sostituisci :id_ordine con l'ID dell'ordine specifico
+    Pizze.nome
+FROM Pizze
+WHERE Pizze.nome IN ('Margherita', 'Quattro Formaggi');
+
+
+4) inserisci le aggiunte
+
+
+ESEMPIO COMPLETO:
+INSERT INTO Tempi (orario) VALUES ('2023-09-01 21:30:00');
+
+INSERT INTO Tempi (orario) VALUES ('2023-09-01 20:12:00');
+
+INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)
+VALUES (
+    (SELECT SUM(prezzoBase) FROM Pizze WHERE nome IN ('Margherita', 'cipolla', 'tonno', 'bufala', 'montanara')),
+    'In attesa',
+    FALSE,
+    10, -- Sostituisci con l'ID del cliente che effettua l'ordine
+    '2023-09-01 21:30:00', -- Orario di ritiro
+    '2023-09-01 20:12:00',  -- Orario di effettuazione
+    'ritiro'
+);
+
+INSERT INTO Composizioni (ordine, pizza, ingrediente)
+SELECT
+    (SELECT codOrdine
+     FROM Ordini
+     WHERE utente = 10
+     ORDER BY orarioEffettuazione DESC
+     LIMIT 1), -- Ottieni l'ID dell'ordine più recente del cliente
+    'tonno',
+    'salame dolce';
+    
+    INSERT INTO Composizioni (ordine, pizza, ingrediente)
+SELECT
+    (SELECT codOrdine
+     FROM Ordini
+     WHERE utente = 10
+     ORDER BY orarioEffettuazione DESC
+     LIMIT 1), -- Ottieni l'ID dell'ordine più recente del cliente
+    'bufala',
+    'prosciutto crudo';
+
+
+--CONSEGNE DI PROVA
+
+INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)
+VALUES (
+    (SELECT SUM(prezzoBase) FROM Pizze WHERE nome IN ('tonno')),
+    'In attesa',
+    FALSE,
+    15, -- Sostituisci con l'ID del cliente che effettua l'ordine
+    '2023-09-01 19:15:00', -- Orario di ritiro
+    '2023-09-01 18:47:00',  -- Orario di effettuazione
+    'consegna'
+);
+
+INSERT INTO Tempi (orario) VALUES ('2023-09-01 17:59:00');
+
+INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)
+VALUES (
+    (SELECT SUM(prezzoBase) FROM Pizze WHERE nome IN ('energica')),
+    'In attesa',
+    FALSE,
+    16, -- Sostituisci con l'ID del cliente che effettua l'ordine
+    '2023-09-01 19:15:00', -- Orario di ritiro
+    '2023-09-01 18:47:00',  -- Orario di effettuazione
+    'consegna'
+);
+
+
+
+-- VEDERE TUTTI GLI ORDINI DI UN CLIENTE CON EVENTUALI AGGIUNTE
+
+SELECT
+    O.codOrdine,
+    O.orarioEffettuazione,
+    P.nome AS pizza,
+    GROUP_CONCAT(IFNULL(C.ingrediente, '') SEPARATOR ', ') AS aggiunte
+FROM Ordini AS O
+INNER JOIN Composizioni AS C ON O.codOrdine = C.ordine
+INNER JOIN Pizze AS P ON C.pizza = P.nome
+WHERE O.utente = 10
+GROUP BY O.codOrdine, P.nome
+ORDER BY O.orarioEffettuazione DESC;
+
+
+
+--LATO RIDER
+-- vedere tutti gli ordini che sono consegne e non ancora assegnate
+SELECT
+    O.codOrdine,
+    O.orarioRitiro
+FROM Ordini AS O
+WHERE O.tipo = 'consegna' AND O.assegnata = FALSE;
+
+-- scegliere una consegna e dichiarare di farla
+-- Inserisci l'assegnazione per l'ordine specifico al rider specifico con l'orario previsto
+INSERT INTO Assegnazioni (utente, ordine, orario)
+VALUES (4, 4, '2023-09-01 19:15:00');
+
+IMPORTANTE: codice ordine e orario ordine vanno salvati in 2 varibili e sono ottenute dalla query precedente.
+
+
+-- Dichiarare che una consegna è stata assegnata:
+
+UPDATE Ordini
+SET assegnata = TRUE
+WHERE codOrdine = [CODICE_ORDINE];
+
+
+
+----- così è ok per il primo che si inserisce:
+SELECT
+    O.codOrdine,
+    O.orarioRitiro
+FROM Ordini AS O
+WHERE O.tipo = 'consegna' AND O.assegnata = FALSE;
+
+
+-- Recupera il numero di consegne per un rider in un determinato orario
+SELECT COUNT(*)
+FROM Assegnazioni
+WHERE utente = 4 AND orario = '2023-09-01 19:15:00';
+
+-- Inserisci la consegna in base al numero di consegne
+INSERT INTO Assegnazioni (utente, orario, ordine2)
+VALUES (4, '2023-09-01 19:15:00', 5);
+
+UPDATE Ordini
+SET assegnata = TRUE
+WHERE codOrdine = 5;
+
+
+
+----- per i successivi:
+-- per il secondo:
+SELECT
+    O.codOrdine,
+    O.orarioRitiro
+FROM Ordini AS O
+WHERE O.tipo = 'consegna' AND O.assegnata = FALSE;
+
+-- Recupera il numero di consegne per un rider in un determinato orario
+SELECT COUNT(*)
+FROM Assegnazioni
+WHERE utente = 4 AND orario = '2023-09-01 19:15:00';
+
+-- Inserisci la consegna in base al numero di consegne
+UPDATE assegnazioni
+SET ordine2 = 5
+WHERE utente = 4 AND orario = '2023-09-01 19:15:00';
+
+UPDATE Ordini
+SET assegnata = TRUE
+WHERE codOrdine = 5;
+
+
+--- per il terzo:
+SELECT
+    O.codOrdine,
+    O.orarioRitiro
+FROM Ordini AS O
+WHERE O.tipo = 'consegna' AND O.assegnata = FALSE;
+
+-- Recupera il numero di consegne per un rider in un determinato orario
+SELECT COUNT(*)
+FROM Assegnazioni
+WHERE utente = 4 AND orario = '2023-09-01 19:15:00';
+
+-- Inserisci la consegna in base al numero di consegne
+UPDATE assegnazioni
+SET ordine3 = 6
+WHERE utente = 4 AND orario = '2023-09-01 19:15:00';
+
+UPDATE Ordini
+SET assegnata = TRUE
+WHERE codOrdine = 6;
+

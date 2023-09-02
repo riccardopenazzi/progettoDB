@@ -1,0 +1,150 @@
+-- Creazione della tabella Utenti
+CREATE TABLE Utenti (
+    codUtente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255),
+    cognome VARCHAR(255),
+    email VARCHAR(255),
+    telefono VARCHAR(20),
+    password VARCHAR(255),
+    tipo VARCHAR(50)
+);
+
+-- Creazione della tabella Indirizzi
+CREATE TABLE Indirizzi (
+    via VARCHAR(255),
+    numero INT,
+    comune VARCHAR(255),
+    PRIMARY KEY (via, numero, comune)
+);
+
+
+-- Creazione della tabella Carte_fedeltà
+CREATE TABLE Carte_fedeltà (
+    codCarta INT AUTO_INCREMENT PRIMARY KEY,
+    punti INT DEFAULT 0
+);
+
+
+-- Creazione della tabella Coupon
+CREATE TABLE Coupon (
+    codCoupon INT AUTO_INCREMENT PRIMARY KEY,
+    sconto DOUBLE,
+    puntiRichiesti INT
+);
+
+
+CREATE TABLE Recensioni (
+    codRecensione INT AUTO_INCREMENT PRIMARY KEY,
+    stelle INT NOT NULL,
+    commento TEXT,
+    utente INT,
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente)
+);
+
+
+-- Creazione della tabella Tempi
+CREATE TABLE Tempi (
+    orario DATETIME,
+    PRIMARY KEY (orario)
+);
+
+
+-- Creazione della tabella Ordini
+CREATE TABLE Ordini (
+    codOrdine INT AUTO_INCREMENT PRIMARY KEY,
+    totale DOUBLE,
+    stato VARCHAR(50),
+    assegnata BOOLEAN,
+    utente INT,
+    orarioRitiro DATETIME,
+    orarioEffettuazione DATETIME,
+    tipo VARCHAR(100),
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
+    FOREIGN KEY (orarioRitiro) REFERENCES Tempi(orario),
+    FOREIGN KEY (orarioEffettuazione) REFERENCES Tempi(orario)
+);
+
+
+-- Creazione della tabella Ingredienti
+CREATE TABLE Ingredienti (
+    nome VARCHAR(255) PRIMARY KEY,
+    prezzo DOUBLE
+);
+
+
+-- Creazione della tabella Pizze
+CREATE TABLE Pizze (
+    nome VARCHAR(255) PRIMARY KEY,
+    prezzoBase DOUBLE,
+    presente BOOLEAN DEFAULT TRUE
+);
+
+-- Creazione della tabella Domiciliazioni
+CREATE TABLE Domiciliazioni (
+    utente INT,
+    via VARCHAR(255),
+    numero INT,
+    comune VARCHAR(255),
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
+    FOREIGN KEY (via, numero, comune) REFERENCES Indirizzi(via, numero, comune)
+);
+
+-- Creazione della tabella Destinazioni
+CREATE TABLE Destinazioni (
+    ordine INT,
+    via VARCHAR(255),
+    numero INT,
+    comune VARCHAR(255),
+    FOREIGN KEY (ordine) REFERENCES Ordini(codOrdine),
+    FOREIGN KEY (via, numero, comune) REFERENCES Indirizzi(via, numero, comune),
+    UNIQUE KEY (ordine, via, numero, comune)
+);
+
+CREATE TABLE Assegnazioni (
+    utente INT,
+    ordine1 INT,
+    ordine2 INT,
+    ordine3 INT,
+    orario DATETIME,
+    PRIMARY KEY (utente, orario),
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
+    FOREIGN KEY (ordine1) REFERENCES Ordini(codOrdine),
+    FOREIGN KEY (ordine2) REFERENCES Ordini(codOrdine),
+    FOREIGN KEY (ordine3) REFERENCES Ordini(codOrdine),
+    FOREIGN KEY (orario) REFERENCES Tempi(orario)
+);
+
+-- Creazione della tabella Appartenenze
+CREATE TABLE Appartenenze (
+    utente INT,
+    cartaFedeltà INT,
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
+    FOREIGN KEY (cartaFedeltà) REFERENCES Carte_fedeltà(codCarta),
+    UNIQUE KEY (cartaFedeltà)
+);
+
+-- Creazione della tabella Utilizzi_coupon
+CREATE TABLE Utilizzi_coupon (
+    utente INT,
+    coupon INT,
+    FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
+    FOREIGN KEY (coupon) REFERENCES Coupon(codCoupon)
+);
+
+-- Creazione della tabella Farciture
+CREATE TABLE Farciture (
+    pizza VARCHAR(255),
+    ingrediente VARCHAR(255),
+    FOREIGN KEY (pizza) REFERENCES Pizze(nome),
+    FOREIGN KEY (ingrediente) REFERENCES Ingredienti(nome)
+);
+
+-- Creazione della tabella Composizioni
+CREATE TABLE Composizioni (
+    ordine INT,
+    pizza VARCHAR(255),
+    ingrediente VARCHAR(255),
+    FOREIGN KEY (ordine) REFERENCES Ordini(codOrdine),
+    FOREIGN KEY (pizza) REFERENCES Pizze(nome),
+    FOREIGN KEY (ingrediente) REFERENCES Ingredienti(nome)
+);
