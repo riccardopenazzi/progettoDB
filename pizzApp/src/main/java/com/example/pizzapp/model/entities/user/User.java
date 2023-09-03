@@ -5,10 +5,10 @@ public class User {
     private static String nome;
     private static String cognome;
     private static String email;
-    private static int telefono;
+    private static String telefono;
     private static String tipo;
 
-    public User(final int codUtente, final String nome, final String cognome, final String email, final int telefono, final String tipo) {
+    public static void createUser (final int codUtente, final String nome, final String cognome, final String email, final String telefono, final String tipo) {
         User.codUtente = codUtente;
         User.nome = nome;
         User.cognome = cognome;
@@ -17,27 +17,27 @@ public class User {
         User.tipo = tipo;
     }
 
-    public int getCodUtente() {
+    public static int getCodUtente() {
         return codUtente;
     }
 
-    public String getNome() {
+    public static String getNome() {
         return nome;
     }
 
-    public String getCognome() {
+    public static String getCognome() {
         return cognome;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
-    public int getTelefono() {
+    public static String getTelefono() {
         return telefono;
     }
 
-    public String getTipo() {
+    public static String getTipo() {
         return tipo;
     }
 
@@ -45,23 +45,23 @@ public class User {
         User.codUtente = codUtente;
     }
 
-    public void setNome(String nome) {
+    public static void setNome(String nome) {
         User.nome = nome;
     }
 
-    public void setCognome(String cognome) {
+    public static void setCognome(String cognome) {
         User.cognome = cognome;
     }
 
-    public void setEmail(String email) {
+    public static void setEmail(String email) {
         User.email = email;
     }
 
-    public void setTelefono(int telefono) {
+    public static void setTelefono(String telefono) {
         User.telefono = telefono;
     }
 
-    public void setTipo(String tipo) {
+    public static void setTipo(String tipo) {
         User.tipo = tipo;
     }
 }

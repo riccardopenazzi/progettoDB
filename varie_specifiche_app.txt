@@ -1,0 +1,3 @@
+dimensione pagine 1200 x 700
+
+dim cose da mostrare in mainStage 950 x 700 

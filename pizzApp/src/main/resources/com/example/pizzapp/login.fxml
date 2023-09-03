@@ -41,7 +41,7 @@
                 <Font size="16.0" />
               </font>
             </Button>
-            <Button fx:id="bttRegistrati" layoutX="281.0" layoutY="48.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="92.0" text="Registrati">
+            <Button fx:id="bttRegistrati" layoutX="281.0" layoutY="48.0" mnemonicParsing="false" onAction="#openSignupPage" prefHeight="30.0" prefWidth="92.0" text="Registrati">
               <font>
                 <Font size="14.0" />
               </font>
