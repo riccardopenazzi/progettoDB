@@ -1,2 +1,6 @@
 Cambiare negli schemi gli identificatori di pizza e ingrediente
 
+Aggiungere campo contatore in assegnazioni negli schemi
+
+Modificare metodo showOrari in clienteAddOrderController togliendo 18 : 00 di default e mettendo orario attuale
+

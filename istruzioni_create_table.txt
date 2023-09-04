@@ -106,6 +106,7 @@ CREATE TABLE Assegnazioni (
     ordine2 INT,
     ordine3 INT,
     orario DATETIME,
+    contatore INT DEFAULT 1,
     PRIMARY KEY (utente, orario),
     FOREIGN KEY (utente) REFERENCES Utenti(codUtente),
     FOREIGN KEY (ordine1) REFERENCES Ordini(codOrdine),

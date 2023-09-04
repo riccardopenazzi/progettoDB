@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -51,7 +50,7 @@ public class LoginController {
                 User.createUser(this.rs.getInt("codUtente"), this.rs.getString("nome"),
                         this.rs.getString("cognome"), this.rs.getString("email"),
                         this.rs.getString("telefono"), this.rs.getString("tipo"));
-                String fileToLoad = "/com/example/pizzapp/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
+                String fileToLoad = "/com/example/pizzapp/fxmlFile/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource(fileToLoad));
                     Stage stage = new Stage();
@@ -72,7 +71,7 @@ public class LoginController {
     @FXML
     public void openSignupPage() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/signUp.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/signUp.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

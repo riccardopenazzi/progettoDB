@@ -1,0 +1,25 @@
+SELECT DISTINCT orario
+FROM Assegnazioni
+WHERE orario = '2023-09-03 20:30:00' -- Sostituisci con l'orario specifico
+AND (
+    (ordine1 IS NULL OR ordine2 IS NULL OR ordine3 IS NULL)
+    OR
+    (ordine1 IS NULL AND ordine2 IS NULL AND ordine3 IS NULL)
+);
+
+SELECT DISTINCT orario
+FROM Assegnazioni
+WHERE DATE(orario) = '2023-09-03' -- Sostituisci con la data specifica
+GROUP BY orario
+HAVING COUNT(*) >= 6;
+
+UPDATE assegnazioni
+SET ordine2 = 11
+WHERE utente = 5 AND orario = '2023-09-03 20:30:00';
+
+
+SELECT orario, SUM(contatore) AS somma_contatori
+FROM Assegnazioni
+WHERE DATE(orario) = '2023-09-03' -- Sostituisci con la data specifica
+GROUP BY orario
+HAVING SUM(contatore) >= 6;
