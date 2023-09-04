@@ -94,7 +94,7 @@ public class ClienteAddOrderController implements Initializable {
 
     private ObservableList<Ingrediente> ingredientesList;
 
-    //private ListMultimap<String, List<String>> aggiunte = ArrayListMultimap.create();
+    private List<String> aggiunte;
 
     @FXML
     void showOrari(ActionEvent event) {
