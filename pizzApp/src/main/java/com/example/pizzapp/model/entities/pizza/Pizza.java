@@ -14,6 +14,11 @@ public class Pizza {
         this.ingredienti = ingredienti;
     }
 
+    public Pizza(final String name, final List<String> ingredienti) {
+        this.name = name;
+        this.ingredienti = ingredienti;
+    }
+
     public Pizza(final String name, final Double price, final Boolean present, final List<String> ingredienti) {
         this.name = name;
         this.price = price;

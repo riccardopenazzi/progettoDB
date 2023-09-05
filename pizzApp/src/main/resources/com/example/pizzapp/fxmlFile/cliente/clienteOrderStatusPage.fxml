@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.pizzapp.fxmlFile.cliente.ClienteOrderStatusPage"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.cliente.ClienteOrderStatusController">
+   <children>
+      <AnchorPane prefHeight="250.0" prefWidth="950.0">
+         <children>
+            <Label fx:id="lbStatus" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="900.0" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tableCurrentOrder" layoutY="37.0" prefHeight="213.0" prefWidth="950.0">
+              <columns>
+                <TableColumn fx:id="colCurrentPizza" prefWidth="300.0" text="Pizza" />
+                <TableColumn fx:id="colCurrentIng" prefWidth="650.0" text="Ingredienti" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="250.0" prefHeight="450.0" prefWidth="950.0">
+         <children>
+            <Label layoutX="413.0" layoutY="14.0" text="Ordini precedenti">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TableView layoutY="39.0" prefHeight="412.0" prefWidth="950.0">
+              <columns>
+                <TableColumn prefWidth="150.0" text="Ordine numero" />
+                <TableColumn prefWidth="300.0" text="Pizza" />
+                  <TableColumn prefWidth="500.0" text="Ingredienti" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>

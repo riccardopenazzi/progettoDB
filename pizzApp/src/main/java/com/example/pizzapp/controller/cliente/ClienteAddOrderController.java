@@ -2,10 +2,7 @@ package com.example.pizzapp.controller.cliente;
 
 import com.example.pizzapp.model.entities.pizza.Pizza;
 import com.example.pizzapp.model.entities.user.User;
-import com.example.pizzapp.utils.DatabaseConnection;
-import com.example.pizzapp.utils.Ingrediente;
-import com.example.pizzapp.utils.OrariDisponibili;
-import com.example.pizzapp.utils.Orario;
+import com.example.pizzapp.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -86,7 +83,7 @@ public class ClienteAddOrderController implements Initializable {
 
     private String selectedType;
 
-    private List<String> pizzaName = new ArrayList<>();
+    private List<PizzaAndIngred> pizzaList = new ArrayList<>();
 
     private Pizza currentSelectedPizza;
 
@@ -94,7 +91,9 @@ public class ClienteAddOrderController implements Initializable {
 
     private ObservableList<Ingrediente> ingredientesList;
 
-    private List<String> aggiunte;
+    private Ingrediente currentSelectedIngrediente;
+
+    private List<String> ingredToAdd = new ArrayList<>();
 
     @FXML
     void showOrari(ActionEvent event) {
@@ -127,25 +126,23 @@ public class ClienteAddOrderController implements Initializable {
 
     @FXML
     void addIngredienti(ActionEvent event) {
-
+        if (this.currentSelectedIngrediente != null) {
+            this.ingredToAdd.add(this.currentSelectedIngrediente.getName());
+        }
     }
 
     @FXML
     void addPizza(ActionEvent event) {
         if(this.currentSelectedPizza != null) {
-            this.pizzaName.add(this.currentSelectedPizza.getName());
+            this.pizzaList.add(new PizzaAndIngred(this.currentSelectedPizza.getName(), List.copyOf(this.ingredToAdd)));
+            System.out.println("La pizza è così modellata: " + this.currentSelectedPizza.getName() +
+                    " " +  this.ingredToAdd.toString());
+            this.ingredToAdd.clear();
         }
     }
 
     @FXML
     void confirmOrder(ActionEvent event) {
-        /*
-        quattro fasi:
-        inserisci orari
-        crea ordine
-        aggiungi pizze
-        aggiungi eventuali aggiunte
-         */
         //inserimento orari
         this.connect = DatabaseConnection.connectDb();
         String queryTempi = "INSERT IGNORE into Tempi (orario) VALUES (?), (?)";
@@ -187,17 +184,20 @@ public class ClienteAddOrderController implements Initializable {
             if (gen.next()) {
                 orderId = gen.getInt(1);
             }
-            String queryAddPizza = "INSERT INTO Composizioni (ordine, pizza)\n" +
-                    "SELECT\n" +
-                    "    ?, -- Sostituisci :id_ordine con l'ID dell'ordine specifico\n" +
-                    "    Pizze.nome\n" +
-                    "FROM Pizze\n" +
-                    "WHERE Pizze.nome IN (?);\n";
-            for (String e : pizzaName) {
+            String queryAddPizza = "INSERT INTO Composizioni (ordine, pizza, ingredienti_array)\n" +
+                    "VALUES (?, ?, ?);\n";
+            for (PizzaAndIngred e : pizzaList) {
                 System.out.println("Aggiungo pizza: " + e);
                 this.pst = this.connect.prepareStatement(queryAddPizza);
                 this.pst.setInt(1, orderId);
-                this.pst.setString(2, e);
+                this.pst.setString(2, e.getPizzaName());
+                String strIng = "";
+                for (String str : e.getIngredients()) {
+                    System.out.println("Ingrediente: " + str);
+                    strIng = strIng + str + ", ";
+                }
+                System.out.println("La stringa degli ingredienti è: " + strIng);
+                this.pst.setString(3, strIng);
                 this.pst.executeUpdate();
             }
         } catch (SQLException e) {
@@ -275,7 +275,8 @@ public class ClienteAddOrderController implements Initializable {
 
     @FXML
     void selectAggiunta(MouseEvent event) {
-
+        this.currentSelectedIngrediente = this.tableAggiunge.getSelectionModel().getSelectedItem();
+        System.out.println("Stai selezionando " + this.currentSelectedIngrediente.getName());
     }
 
     public void popolateTableMenu() {
