@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.cliente.ClienteAddOrderController">
+   <children>
+      <AnchorPane prefHeight="300.0" prefWidth="950.0">
+         <children>
+            <RadioButton fx:id="radioRitiro" layoutX="14.0" layoutY="73.0" mnemonicParsing="false" onAction="#showOrari" text="Ritiro in pizzeria">
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggleOrderType" />
+               </toggleGroup>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="radioConsegna" layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#showOrari" text="Consegna a domicilio" toggleGroup="$toggleOrderType">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <Label layoutX="14.0" layoutY="35.0" text="Seleziona il tipo di ordine">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="652.0" layoutY="10.0" text="Seleziona un orario:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tableOrario" layoutX="647.0" layoutY="41.0" onMouseClicked="#selectTime" prefHeight="250.0" prefWidth="150.0">
+              <columns>
+                <TableColumn fx:id="colOrario" prefWidth="149.0" text="Orario" />
+              </columns>
+            </TableView>
+            <Button fx:id="bttConfirmOrder" layoutX="832.0" layoutY="113.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="55.0" prefWidth="104.0" text="Conferma &#10;ordine" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="comboAddress" layoutX="245.0" layoutY="71.0" prefWidth="150.0" promptText="scegli" />
+            <Label layoutX="245.0" layoutY="35.0" text="Seleziona indirizzo di consegna">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtVia" layoutX="245.0" layoutY="117.0" promptText="via" />
+            <TextField fx:id="txtNumero" layoutX="245.0" layoutY="154.0" promptText="numero" />
+            <TextField fx:id="txtComune" layoutX="245.0" layoutY="189.0" promptText="comune" />
+            <Button fx:id="bttAddIndirizzo" layoutX="439.0" layoutY="135.0" mnemonicParsing="false" onAction="#addIndirizzo" text="Aggiungi indirizzo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="300.0" prefHeight="400.0" prefWidth="950.0">
+         <children>
+            <TableView fx:id="tableMenu" onMouseClicked="#selectPizza" prefHeight="400.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="colNome" prefWidth="200.0" text="Nome" />
+                <TableColumn fx:id="colIngredienti" prefWidth="300.0" text="Ingredienti" />
+                  <TableColumn fx:id="colPrezzo" prefWidth="100.0" text="Prezzo" />
+              </columns>
+            </TableView>
+            <Button fx:id="bttAddPizza" layoutX="824.0" layoutY="80.0" mnemonicParsing="false" onAction="#addPizza" text="Aggiungi pizza">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttRemovePizza" layoutX="824.0" layoutY="140.0" mnemonicParsing="false" onAction="#removePizza" prefHeight="30.0" prefWidth="110.0" text="Rimuovi pizza">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttAddIngredienti" layoutX="824.0" layoutY="200.0" mnemonicParsing="false" onAction="#addIngredienti" prefHeight="55.0" prefWidth="110.0" text="Aggiungi &#10;ingredienti">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <TableView fx:id="tableAggiunge" layoutX="646.0" onMouseClicked="#selectAggiunta" prefHeight="400.0" prefWidth="150.0">
+              <columns>
+                <TableColumn fx:id="colAggiunte" prefWidth="150.0" text="Aggiunte" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

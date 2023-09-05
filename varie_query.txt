@@ -479,3 +479,27 @@ UPDATE Ordini
 SET assegnata = TRUE
 WHERE codOrdine = 6;
 
+
+
+
+
+
+
+
+-------------------------IMPORTANTE
+SELECT utente AS id_rider, ordine1 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine1 AS orario_effettivo FROM Assegnazioni UNION ALL SELECT utente AS id_rider, ordine2 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine1 AS orario_effettivo FROM Assegnazioni UNION ALL SELECT utente AS id_rider, ordine3 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine1 AS orario_effettivo FROM Assegnazioni
+
+STESSA MA FATTA MEGLIO:
+
+SELECT utente AS id_rider, ordine1 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine1 AS orario_effettivo
+FROM Assegnazioni
+WHERE ordine1 IS NOT NULL
+UNION ALL
+SELECT utente AS id_rider, ordine2 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine2 AS orario_effettivo
+FROM Assegnazioni
+WHERE ordine2 IS NOT NULL
+UNION ALL
+SELECT utente AS id_rider, ordine3 AS numero_consegna, orario AS orario_previsto, orarioEffettivoOrdine3 AS orario_effettivo
+FROM Assegnazioni
+WHERE ordine3 IS NOT NULL;
+

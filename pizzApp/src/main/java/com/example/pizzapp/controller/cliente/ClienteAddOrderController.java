@@ -8,11 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -27,6 +23,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ClienteAddOrderController implements Initializable {
+
+
+    @FXML
+    private Button bttAddIndirizzo;
 
     @FXML
     private Button bttAddIngredienti;
@@ -94,6 +94,43 @@ public class ClienteAddOrderController implements Initializable {
     private Ingrediente currentSelectedIngrediente;
 
     private List<String> ingredToAdd = new ArrayList<>();
+
+    @FXML
+    private ComboBox<Address> comboAddress;
+
+    @FXML
+    private TextField txtComune;
+
+    @FXML
+    private TextField txtNumero;
+
+    @FXML
+    private TextField txtVia;
+
+    @FXML
+    void addIndirizzo(ActionEvent event) {
+        String queryUpdate = "INSERT IGNORE INTO Indirizzi (via, numero, comune)" +
+                "VALUES (?, ?, ?)";
+        this.connect = DatabaseConnection.connectDb();
+        try {
+            this.pst = this.connect.prepareStatement(queryUpdate);
+            this.pst.setString(1, this.txtVia.getText());
+            this.pst.setInt(2, Integer.parseInt(this.txtNumero.getText()));
+            this.pst.setString(3, this.txtComune.getText());
+            this.pst.executeUpdate();
+            String queryDomic = "INSERT INTO Domiciliazioni (utente, via, numero, comune)" +
+                    "VALUES (?, ?, ?, ?)";
+            this.pst = this.connect.prepareStatement(queryDomic);
+            this.pst.setInt(1, User.getCodUtente());
+            this.pst.setString(2, this.txtVia.getText());
+            this.pst.setInt(3, Integer.parseInt(this.txtNumero.getText()));
+            this.pst.setString(4, this.txtComune.getText());
+            this.pst.executeUpdate();
+            popolateComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void showOrari(ActionEvent event) {
@@ -198,6 +235,17 @@ public class ClienteAddOrderController implements Initializable {
                 }
                 System.out.println("La stringa degli ingredienti è: " + strIng);
                 this.pst.setString(3, strIng);
+                this.pst.executeUpdate();
+            }
+            if (this.radioConsegna.isSelected()) {
+                String queryDest = "INSERT INTO Destinazioni (ordine, via, numero, comune)" +
+                        "VALUES (?, ?, ?, ?)";
+                this.pst = this.connect.prepareStatement(queryDest);
+                this.pst.setInt(1, orderId);
+                Address addr = this.comboAddress.getSelectionModel().getSelectedItem();
+                this.pst.setString(2, addr.getVia());
+                this.pst.setInt(3, addr.getNumero());
+                this.pst.setString(4, addr.getComune());
                 this.pst.executeUpdate();
             }
         } catch (SQLException e) {
@@ -305,9 +353,28 @@ public class ClienteAddOrderController implements Initializable {
         this.tableAggiunge.setItems(list);
     }
 
+    public void popolateComboBox() {
+        ObservableList<Address> addresses = FXCollections.observableArrayList();
+        String queryAddress = "SELECT * FROM Domiciliazioni WHERE utente = ?";
+        this.connect = DatabaseConnection.connectDb();
+        try {
+            this.pst = this.connect.prepareStatement(queryAddress);
+            this.pst.setInt(1, User.getCodUtente());
+            this.rs = this.pst.executeQuery();
+            while (this.rs.next()) {
+                addresses.add(new Address(this.rs.getString("via"), this.rs.getInt("numero"),
+                        this.rs.getString("comune")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        this.comboAddress.setItems(addresses);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         popolateTableMenu();
         popolateTableIngredienti();
+        popolateComboBox();
     }
 }

@@ -43,7 +43,7 @@ public class ClienteDashboardController implements Initializable {
     @FXML
     void showAddOrderPage(ActionEvent event) {
         try {
-            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/cliente/clienteAddOrderPage.fxml"));
+            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/addOrderPage.fxml"));
             setNode(tmp);
         } catch (IOException e) {
             throw new RuntimeException(e);
