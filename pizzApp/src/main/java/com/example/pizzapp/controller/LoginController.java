@@ -50,7 +50,12 @@ public class LoginController {
                 User.createUser(this.rs.getInt("codUtente"), this.rs.getString("nome"),
                         this.rs.getString("cognome"), this.rs.getString("email"),
                         this.rs.getString("telefono"), this.rs.getString("tipo"));
-                String fileToLoad = "/com/example/pizzapp/fxmlFile/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
+                String fileToLoad = "";
+                if (User.getTipo().equals("pizzaiolo") || User.getTipo().equals("aiuto cuoco")) {
+                    fileToLoad = "/com/example/pizzapp/fxmlFile/cucina/cucinaDashboard.fxml";
+                } else {
+                    fileToLoad = "/com/example/pizzapp/fxmlFile/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
+                }
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource(fileToLoad));
                     Stage stage = new Stage();

@@ -25,6 +25,11 @@ public class Delivery {
         this.dest = dest;
     }
 
+    public Delivery(int codOrder, LocalDateTime deliveryTime) {
+        this.codOrder = codOrder;
+        this.deliveryTime = deliveryTime;
+    }
+
     public int getCodCostumer() {
         return codCostumer;
     }

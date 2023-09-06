@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.cucina.CucinaDashboardController">
+   <children>
+      <AnchorPane prefHeight="550.0" prefWidth="1200.0">
+         <children>
+            <TableView fx:id="tableOrdine" maxWidth="300.0" minWidth="300.0" onMouseClicked="#selectOrdine" prefHeight="550.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="colNumOrdine" prefWidth="125.0" text="Numero ordine" />
+                <TableColumn fx:id="colOrario" prefWidth="175.0" text="Orario" />
+              </columns>
+            </TableView>
+            <TableView fx:id="tableDettaglio" layoutX="350.0" prefHeight="550.0" prefWidth="900.0">
+              <columns>
+                <TableColumn fx:id="colNome" prefWidth="275.0" text="Pizza" />
+                <TableColumn fx:id="colIng" prefWidth="625.0" text="Aggiunte" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <RadioButton fx:id="radioDaFare" layoutX="14.0" layoutY="588.0" mnemonicParsing="false" onAction="#popolateOrdini" prefHeight="17.0" prefWidth="132.0" text="Mostra da fare">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="show" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radioInPreparazione" layoutX="14.0" layoutY="629.0" mnemonicParsing="false" onAction="#popolateOrdini" text="Mostra in preparazione" toggleGroup="$show">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <Button fx:id="bttSegnaCompletato" layoutX="350.0" layoutY="600.0" mnemonicParsing="false" onAction="#segnaCompletato" text="Segna come &#10;completato" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="bttSegnaInPreparazione" layoutX="550.0" layoutY="600.0" mnemonicParsing="false" onAction="#segnaPreparazione" text="Segna come &#10;in preprazione" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

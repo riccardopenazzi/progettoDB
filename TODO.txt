@@ -6,3 +6,16 @@ Modificare metodo showOrari in clienteAddOrderController togliendo 18 : 00 di de
 
 Selettore indirizzo in pagina aggiunta ordine
 
+aggiungere clausola where presente = true in mostra menu
+
+aggiungere inserimento indirizzo quando si fa login
+
+chiudere tutte le connessioni
+
+mettere varie finestre dialogo
+
+bottone rimuovi pizza
+
+sistemare calcolo del totale
+
+mostrare consegne solo per la data corrente a rider
