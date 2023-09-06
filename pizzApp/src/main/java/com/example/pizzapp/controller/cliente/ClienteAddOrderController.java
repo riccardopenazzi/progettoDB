@@ -118,14 +118,18 @@ public class ClienteAddOrderController implements Initializable {
             this.pst.setInt(2, Integer.parseInt(this.txtNumero.getText()));
             this.pst.setString(3, this.txtComune.getText());
             this.pst.executeUpdate();
-            String queryDomic = "INSERT INTO Domiciliazioni (utente, via, numero, comune)" +
-                    "VALUES (?, ?, ?, ?)";
-            this.pst = this.connect.prepareStatement(queryDomic);
-            this.pst.setInt(1, User.getCodUtente());
-            this.pst.setString(2, this.txtVia.getText());
-            this.pst.setInt(3, Integer.parseInt(this.txtNumero.getText()));
-            this.pst.setString(4, this.txtComune.getText());
-            this.pst.executeUpdate();
+            if (!User.getTipo().equals("admin")) {
+                System.out.println("User è: " + User.getTipo());
+                System.out.println("Dato che non è un amministratore inserisco anche in domiciliazioni");
+                String queryDomic = "INSERT INTO Domiciliazioni (utente, via, numero, comune)" +
+                        "VALUES (?, ?, ?, ?)";
+                this.pst = this.connect.prepareStatement(queryDomic);
+                this.pst.setInt(1, User.getCodUtente());
+                this.pst.setString(2, this.txtVia.getText());
+                this.pst.setInt(3, Integer.parseInt(this.txtNumero.getText()));
+                this.pst.setString(4, this.txtComune.getText());
+                this.pst.executeUpdate();
+            }
             popolateComboBox();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -355,11 +359,14 @@ public class ClienteAddOrderController implements Initializable {
 
     public void popolateComboBox() {
         ObservableList<Address> addresses = FXCollections.observableArrayList();
-        String queryAddress = "SELECT * FROM Domiciliazioni WHERE utente = ?";
+        String queryAddress = (User.getTipo().equals("admin") ? "SELECT * FROM Indirizzi" :
+                "SELECT * FROM Domiciliazioni WHERE utente = ?");
         this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(queryAddress);
-            this.pst.setInt(1, User.getCodUtente());
+            if (!User.getTipo().equals("admin")) {
+                this.pst.setInt(1, User.getCodUtente());
+            }
             this.rs = this.pst.executeQuery();
             while (this.rs.next()) {
                 addresses.add(new Address(this.rs.getString("via"), this.rs.getInt("numero"),

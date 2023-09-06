@@ -64,6 +64,7 @@ public class LoginController {
             }
             this.pst.close();
             this.connect.close();
+            System.out.println("NUOVO USER CREATO: " + User.getTipo());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

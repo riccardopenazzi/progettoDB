@@ -36,9 +36,29 @@ public class AdminDashboardController implements Initializable {
         this.lbWelcome.setText("Bentornato, " + User.getNome());
     }
     @FXML
-    void showInsertOrder(ActionEvent event) {
+    public void showInsertOrder(ActionEvent event) {
         try {
             AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/addOrderPage.fxml"));
+            setNode(tmp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void showEmployee() {
+        try {
+            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/admin/adminEmployeeManagementPage.fxml"));
+            setNode(tmp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void showMenuManager() {
+        try {
+            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/admin/adminMenuManager.fxml"));
             setNode(tmp);
         } catch (IOException e) {
             throw new RuntimeException(e);
