@@ -57,7 +57,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bttUseCoupon" layoutX="832.0" layoutY="46.0" mnemonicParsing="false" onAction="#openCouponPopup" prefHeight="55.0" prefWidth="104.0" text="Utilizza &#10;coupon&#10;" textAlignment="CENTER">
+            <Button fx:id="bttUseCoupon" layoutX="832.0" layoutY="46.0" mnemonicParsing="false" onAction="#openCouponPopup" prefHeight="55.0" prefWidth="104.0" text="Utilizza &#10;coupon&#10;" textAlignment="CENTER" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
