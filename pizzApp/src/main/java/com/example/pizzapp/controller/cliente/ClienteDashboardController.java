@@ -93,7 +93,7 @@ public class ClienteDashboardController implements Initializable {
     @FXML
     void showReviewPage(ActionEvent event) {
         try {
-            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/cliente/clienteReview6Page.fxml"));
+            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/cliente/clienteReviewPage.fxml"));
             setNode(tmp);
         } catch (IOException e) {
             throw new RuntimeException(e);
