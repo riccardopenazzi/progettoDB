@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.admin.AdminCouponManagerController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="399.0">
+         <children>
+            <Button fx:id="bttShowNewCoupon" layoutX="14.0" layoutY="141.0" mnemonicParsing="false" onAction="#showNewCoupon" text="Inserisci nuovo &#10;coupon" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <AnchorPane fx:id="anchorNewCoupon" layoutX="151.0" layoutY="41.0" prefHeight="300.0" prefWidth="250.0" visible="false">
+               <children>
+                  <TextField fx:id="txtSconto" layoutX="52.0" layoutY="36.0" promptText="sconto" />
+                  <TextField fx:id="txtCosto" layoutX="52.0" layoutY="88.0" promptText="punti richiesti" />
+                  <Button fx:id="bttCreaCoupon" layoutX="102.0" layoutY="195.0" mnemonicParsing="false" onAction="#creaCoupon" text="Crea">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <CheckBox fx:id="checkStato" layoutX="52.0" layoutY="142.0" mnemonicParsing="false" text="Attiva in seguito">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="401.0" prefHeight="700.0" prefWidth="548.0">
+         <children>
+            <TableView fx:id="tableCoupon" onMouseClicked="#selectCoupon" prefHeight="484.0" prefWidth="548.0">
+              <columns>
+                <TableColumn fx:id="colSconto" prefWidth="150.0" text="Sconto" />
+                <TableColumn fx:id="colCosto" prefWidth="150.0" text="Costo" />
+                  <TableColumn fx:id="colStato" prefWidth="248.0" text="Attivo" />
+              </columns>
+            </TableView>
+            <Button fx:id="bttDisable" layoutX="113.0" layoutY="541.0" mnemonicParsing="false" onAction="#disabilitaCoupon" text="Disattiva">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttAble" layoutX="246.0" layoutY="541.0" mnemonicParsing="false" onAction="#abilitaCoupon" text="Attiva">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttDelete" layoutX="373.0" layoutY="541.0" mnemonicParsing="false" onAction="#eliminaCoupon" text="Elimina">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

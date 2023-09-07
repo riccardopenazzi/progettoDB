@@ -31,6 +31,11 @@
                </font>
             </Button>
             <Line endX="100.0" layoutX="101.0" layoutY="68.0" startX="-100.0" stroke="#ffeeee" />
+            <Button fx:id="bttCouponManager" layoutX="63.0" layoutY="242.0" mnemonicParsing="false" onAction="#showCouponManager" style="-fx-background-color: #a6c4f5;" text="Gestione coupon">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainStage" layoutX="250.0" prefHeight="700.0" prefWidth="950.0" />

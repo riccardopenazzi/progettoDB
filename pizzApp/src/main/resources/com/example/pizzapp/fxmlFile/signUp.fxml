@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.SignupController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #d4cecd;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -18,22 +17,22 @@
                </font>
             </Label>
             <Label layoutX="232.0" layoutY="71.0" text="Completa i campi richiesti" />
-            <TextField fx:id="txtName" layoutX="62.0" layoutY="123.0" promptText="nome">
+            <TextField fx:id="txtName" layoutX="14.0" layoutY="123.0" promptText="nome">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtSurname" layoutX="369.0" layoutY="123.0" promptText="cognome">
+            <TextField fx:id="txtSurname" layoutX="215.0" layoutY="123.0" promptText="cognome">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtEmail" layoutX="62.0" layoutY="185.0" promptText="email">
+            <TextField fx:id="txtEmail" layoutX="14.0" layoutY="170.0" promptText="email">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtTelefono" layoutX="369.0" layoutY="185.0" promptText="telefono">
+            <TextField fx:id="txtTelefono" layoutX="215.0" layoutY="170.0" promptText="telefono">
                <font>
                   <Font size="14.0" />
                </font>
@@ -43,16 +42,31 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bttSignup" layoutX="259.0" layoutY="310.0" mnemonicParsing="false" onAction="#register" text="Registrami">
+            <Button fx:id="bttSignup" layoutX="162.0" layoutY="276.0" mnemonicParsing="false" onAction="#register" text="Registrami">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <PasswordField fx:id="txtPassword" layoutX="214.0" layoutY="252.0" promptText="password">
+            <PasswordField fx:id="txtPassword" layoutX="117.0" layoutY="222.0" promptText="password">
                <font>
                   <Font size="14.0" />
                </font>
             </PasswordField>
+            <TextField fx:id="txtVia" layoutX="413.0" layoutY="123.0" promptText="via">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtNumero" layoutX="413.0" layoutY="170.0" promptText="numero">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtComune" layoutX="413.0" layoutY="222.0" promptText="comune">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
          </children>
       </AnchorPane>
    </children>

@@ -154,6 +154,7 @@ public class CucinaDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.radioDaFare.setSelected(true);
+        popolateOrdini();
     }
 }

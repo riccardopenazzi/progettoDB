@@ -65,6 +65,16 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
+    @FXML
+    public void showCouponManager() {
+        try {
+            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/admin/adminCouponManager.fxml"));
+            setNode(tmp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void setNode(Node n) {
         this.mainStage.getChildren().clear();
         this.mainStage.getChildren().add(n);

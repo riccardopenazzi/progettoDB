@@ -29,7 +29,8 @@ CREATE TABLE Carte_fedelta (
 CREATE TABLE Coupon (
     codCoupon INT AUTO_INCREMENT PRIMARY KEY,
     sconto DOUBLE,
-    puntiRichiesti INT
+    puntiRichiesti INT,
+    disponibile BOOLEAN DEFAULT TRUE
 );
 
 

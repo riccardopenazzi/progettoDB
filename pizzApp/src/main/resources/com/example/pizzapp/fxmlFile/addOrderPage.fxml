@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.cliente.ClienteAddOrderController">
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.AddOrderController">
    <children>
       <AnchorPane prefHeight="300.0" prefWidth="950.0">
          <children>
@@ -43,11 +43,6 @@
                 <TableColumn fx:id="colOrario" prefWidth="149.0" text="Orario" />
               </columns>
             </TableView>
-            <Button fx:id="bttConfirmOrder" layoutX="832.0" layoutY="113.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="55.0" prefWidth="104.0" text="Conferma &#10;ordine" textAlignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
             <ComboBox fx:id="comboAddress" layoutX="245.0" layoutY="71.0" prefWidth="150.0" promptText="scegli" />
             <Label layoutX="245.0" layoutY="35.0" text="Seleziona indirizzo di consegna">
                <font>
@@ -62,6 +57,26 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button fx:id="bttUseCoupon" layoutX="832.0" layoutY="46.0" mnemonicParsing="false" onAction="#openCouponPopup" prefHeight="55.0" prefWidth="104.0" text="Utilizza &#10;coupon&#10;" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttConfirmOrder" layoutX="832.0" layoutY="127.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="55.0" prefWidth="104.0" text="Conferma &#10;ordine" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="863.0" layoutY="204.0" text="Totale:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbTotal" layoutX="829.0" layoutY="232.0" prefHeight="20.0" prefWidth="110.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutY="300.0" prefHeight="400.0" prefWidth="950.0">

@@ -30,11 +30,11 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TableView layoutY="39.0" prefHeight="412.0" prefWidth="950.0">
+            <TableView fx:id="tabelPastOrder" layoutY="39.0" prefHeight="412.0" prefWidth="950.0">
               <columns>
-                <TableColumn prefWidth="150.0" text="Ordine numero" />
-                <TableColumn prefWidth="300.0" text="Pizza" />
-                  <TableColumn prefWidth="500.0" text="Ingredienti" />
+                <TableColumn fx:id="colOrderNumber" prefWidth="150.0" text="Ordine numero" />
+                <TableColumn fx:id="colPastNome" prefWidth="300.0" text="Pizza" />
+                  <TableColumn fx:id="colPastIng" prefWidth="500.0" text="Ingredienti" />
               </columns>
             </TableView>
          </children>

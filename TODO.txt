@@ -19,3 +19,5 @@ bottone rimuovi pizza
 sistemare calcolo del totale
 
 mostrare consegne solo per la data corrente a rider
+
+ordini passati cliente

@@ -1,4 +1,4 @@
-package com.example.pizzapp.controller.cliente;
+package com.example.pizzapp.controller;
 
 import com.example.pizzapp.model.entities.pizza.Pizza;
 import com.example.pizzapp.model.entities.user.User;
@@ -7,11 +7,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -22,23 +27,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteAddOrderController implements Initializable {
+public class AddOrderController implements Initializable {
 
+
+//    @FXML
+//    private Button bttAddIndirizzo;
+//
+//    @FXML
+//    private Button bttAddIngredienti;
+//
+//    @FXML
+//    private Button bttAddPizza;
+//
+//    @FXML
+//    private Button bttConfirmOrder;
+//
+//    @FXML
+//    private Button bttRemovePizza;
 
     @FXML
-    private Button bttAddIndirizzo;
-
-    @FXML
-    private Button bttAddIngredienti;
-
-    @FXML
-    private Button bttAddPizza;
-
-    @FXML
-    private Button bttConfirmOrder;
-
-    @FXML
-    private Button bttRemovePizza;
+    private Button bttUseCoupon;
 
     @FXML
     private TableColumn<Pizza, String> colIngredienti;
@@ -59,6 +67,9 @@ public class ClienteAddOrderController implements Initializable {
     private TableView<Ingrediente> tableAggiunge;
 
     @FXML
+    private Label lbTotal;
+
+    @FXML
     private RadioButton radioConsegna;
 
     @FXML
@@ -70,8 +81,8 @@ public class ClienteAddOrderController implements Initializable {
     @FXML
     private TableView<Orario> tableOrario;
 
-    @FXML
-    private ToggleGroup toggleOrderType;
+//    @FXML
+//    private ToggleGroup toggleOrderType;
 
     private PreparedStatement pst;
 
@@ -89,7 +100,7 @@ public class ClienteAddOrderController implements Initializable {
 
     private ObservableList<Pizza> menu;
 
-    private ObservableList<Ingrediente> ingredientesList;
+//    private ObservableList<Ingrediente> ingredientesList;
 
     private Ingrediente currentSelectedIngrediente;
 
@@ -107,8 +118,10 @@ public class ClienteAddOrderController implements Initializable {
     @FXML
     private TextField txtVia;
 
+    private static double sconto;
+
     @FXML
-    void addIndirizzo(ActionEvent event) {
+    void addIndirizzo() {
         String queryUpdate = "INSERT IGNORE INTO Indirizzi (via, numero, comune)" +
                 "VALUES (?, ?, ?)";
         this.connect = DatabaseConnection.connectDb();
@@ -175,15 +188,37 @@ public class ClienteAddOrderController implements Initializable {
     @FXML
     void addPizza(ActionEvent event) {
         if(this.currentSelectedPizza != null) {
-            this.pizzaList.add(new PizzaAndIngred(this.currentSelectedPizza.getName(), List.copyOf(this.ingredToAdd)));
-            System.out.println("La pizza è così modellata: " + this.currentSelectedPizza.getName() +
-                    " " +  this.ingredToAdd.toString());
+            Double price = 0.0;
+            String query = "SELECT prezzo FROM Ingredienti WHERE nome = ?";
+            this.connect = DatabaseConnection.connectDb();
+            try {
+                for(String ingName : this.ingredToAdd) {
+                    this.pst = this.connect.prepareStatement(query);
+                    this.pst.setString(1, ingName);
+                    this.rs = this.pst.executeQuery();
+                    if (this.rs.next()) {
+                        price = price + this.rs.getDouble("prezzo");
+                    }
+
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            price = price + this.currentSelectedPizza.getPrice();
+            this.pizzaList.add(new PizzaAndIngred(this.currentSelectedPizza.getName(), List.copyOf(this.ingredToAdd), price));
             this.ingredToAdd.clear();
+            Double allTotal = 0.0;
+            for (PizzaAndIngred e : this.pizzaList) {
+                allTotal = allTotal + e.getPrice();
+            }
+            this.lbTotal.setText(allTotal.toString());
         }
     }
 
     @FXML
     void confirmOrder(ActionEvent event) {
+        Boolean flagSconto = sconto > 0.0;
+        Double allTotal = 0.0;
         //inserimento orari
         this.connect = DatabaseConnection.connectDb();
         String queryTempi = "INSERT IGNORE into Tempi (orario) VALUES (?), (?)";
@@ -200,7 +235,7 @@ public class ClienteAddOrderController implements Initializable {
         //creo ordine
         String queryInsertOrder = "INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)\n" +
                 "VALUES (\n" +
-                "    0,\n" +
+                "    ?,\n" +
                 "    'In attesa',\n" +
                 "    FALSE,\n" +
                 "    ?,\n" +
@@ -210,10 +245,16 @@ public class ClienteAddOrderController implements Initializable {
                 ");";
         try {
             this.pst = this.connect.prepareStatement(queryInsertOrder);
-            this.pst.setInt(1, User.getCodUtente());
-            this.pst.setObject(2, rit);
-            this.pst.setObject(3, eff);
-            this.pst.setString(4, this.selectedType);
+            for (PizzaAndIngred e : this.pizzaList) {
+                allTotal = allTotal + e.getPrice();
+            }
+            allTotal = allTotal * (1-sconto);
+            sconto = 0.0; //Per evitare usi multipli di coupon
+            this.pst.setDouble(1, allTotal);
+            this.pst.setInt(2, User.getCodUtente());
+            this.pst.setObject(3, rit);
+            this.pst.setObject(4, eff);
+            this.pst.setString(5, this.selectedType);
             this.pst.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -252,9 +293,50 @@ public class ClienteAddOrderController implements Initializable {
                 this.pst.setString(4, addr.getComune());
                 this.pst.executeUpdate();
             }
+            if (!flagSconto) {
+                updatePoint(allTotal);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updatePoint(double tot) {
+        String queryUpdatePoint = "UPDATE Carte_fedelta AS cf " +
+                "INNER JOIN Appartenenze AS a ON cf.codCarta = a.cartaFedelta " +
+                "SET cf.punti = ? " +
+                "WHERE a.utente = ?";
+        ;
+        this.connect = DatabaseConnection.connectDb();
+        try {
+            PreparedStatement tmpPst = this.connect.prepareStatement(queryUpdatePoint);
+            tmpPst.setInt(1, (int) (getPunti() + tot));
+            tmpPst.setInt(2, User.getCodUtente());
+            tmpPst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public int getPunti() {
+        String query = "SELECT C.punti\n" +
+                "FROM Utenti U\n" +
+                "INNER JOIN Appartenenze A ON U.codUtente = A.utente\n" +
+                "INNER JOIN Carte_fedelta C ON A.cartaFedelta = C.codCarta\n" +
+                "WHERE U.codUtente = ?;";
+        this.connect = DatabaseConnection.connectDb();
+        try {
+            this.pst = this.connect.prepareStatement(query);
+            this.pst.setInt(1, User.getCodUtente());
+            this.rs = this.pst.executeQuery();
+            if (this.rs.next()) {
+                return this.rs.getInt("punti");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 
     @FXML
@@ -331,6 +413,21 @@ public class ClienteAddOrderController implements Initializable {
         System.out.println("Stai selezionando " + this.currentSelectedIngrediente.getName());
     }
 
+    @FXML
+    public void openCouponPopup() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pizzapp/fxmlFile/cliente/popupCoupon.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage popupStage = new Stage();
+            popupStage.setScene(scene);
+            popupStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public void popolateTableMenu() {
         this.menu = readMenu();
         this.colNome.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -378,10 +475,17 @@ public class ClienteAddOrderController implements Initializable {
         this.comboAddress.setItems(addresses);
     }
 
+    public static void setSconto(double s) {
+        sconto = s;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         popolateTableMenu();
         popolateTableIngredienti();
         popolateComboBox();
+        if(User.getTipo().equals("cliente")){
+            this.bttUseCoupon.setVisible(true);
+        }
     }
 }

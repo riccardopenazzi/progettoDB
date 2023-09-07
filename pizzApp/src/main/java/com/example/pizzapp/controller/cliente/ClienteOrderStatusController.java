@@ -35,6 +35,18 @@ public class ClienteOrderStatusController implements Initializable {
     @FXML
     private Label lbStatus;
 
+    @FXML
+    private TableColumn<Pizza, String> colPastIng;
+
+    @FXML
+    private TableColumn<Pizza, String> colPastNome;
+
+    @FXML
+    private TableView<Pizza> tabelPastOrder;
+
+    @FXML
+    private TableColumn<Pizza, Double> colOrderNumber;
+
     private PreparedStatement pst;
 
     private Connection connect;
@@ -45,6 +57,8 @@ public class ClienteOrderStatusController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("INIZIO");
+        popolatePastOrder();
         String query = "SELECT * FROM Ordini WHERE utente = ? and stato != 'completato'";
         try {
             this.connect = DatabaseConnection.connectDb();
@@ -81,5 +95,53 @@ public class ClienteOrderStatusController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void popolatePastOrder() {
+        System.out.println("CHIAMATA");
+        ObservableList<Pizza> list = FXCollections.observableArrayList();
+        String query = "SELECT\n" +
+                "    o.codOrdine,\n" +
+                "    o.totale,\n" +
+                "    o.stato,\n" +
+                "    o.utente,\n" +
+                "    o.orarioRitiro,\n" +
+                "    o.orarioEffettuazione,\n" +
+                "    c.pizza,\n" +
+                "    c.ingredienti_array\n" +
+                "FROM\n" +
+                "    Ordini AS o\n" +
+                "JOIN\n" +
+                "    Composizioni AS c ON o.codOrdine = c.ordine\n" +
+                "JOIN\n" +
+                "    Pizze AS p ON c.pizza = p.nome\n" +
+                "LEFT JOIN\n" +
+                "    Ingredienti AS i ON c.ingredienti_array = i.nome\n" +
+                "WHERE\n" +
+                "    o.stato = 'Completato'\n" +
+                "    AND o.utente = ?; ";
+        this.connect = DatabaseConnection.connectDb();
+        try {
+            this.pst = this.connect.prepareStatement(query);
+            this.pst.setInt(1, User.getCodUtente());
+            this.rs = this.pst.executeQuery();
+            if(this.rs.next()) {
+                System.out.println("Qualcosa c'è");
+            }
+            while (this.rs.next()) {
+                System.out.println("Scorro risultati");
+                String[] tmp = this.rs.getString("ingredienti_array").split(",");
+                list.add((new Pizza(this.rs.getString("pizza"),
+                        (double) this.rs.getInt("codOrdine"),
+                        new ArrayList<>(Arrays.asList(tmp)))));
+            }
+            this.colCurrentPizza.setCellValueFactory(new PropertyValueFactory<>("name"));
+            this.colPastIng.setCellValueFactory(new PropertyValueFactory<>("ingredienti"));
+            this.colOrderNumber.setCellValueFactory(new PropertyValueFactory<>("price"));
+            this.tabelPastOrder.setItems(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
