@@ -102,24 +102,24 @@ VALUES ('Prosciutto Crudo', 10.50);
 
 INSERT INTO Pizze (nome, prezzoBase)
 VALUES
-    ('margherita', 4.5),
-    ('cipolla', 5.5),
-    ('romana', 6),
-    ('salamino', 5.5),
-    ('prosciutto cotto', 5.5),
-    ('tonno', 6.5),
-    ('bufala', 6.5),
-    ('capricciosa', 7),
-    ('funghi porcini', 7.5),
-    ('funghi trifolati', 5.5),
-    ('funghi freschi', 5.5),
-    ('quattro formaggi', 7),
-    ('contadina', 8),
-    ('montanara', 8.5),
-    ('energica', 9),
-    ('esplosiva', 9.5),
-    ('tirolese', 7.5),
-    ('montebaldo', 7);
+    ('Margherita', 4.5),
+    ('Cipolla', 5.5),
+    ('Romana', 6),
+    ('Salamino', 5.5),
+    ('Prosciutto cotto', 5.5),
+    ('Tonno', 6.5),
+    ('Bufala', 6.5),
+    ('Capricciosa', 7),
+    ('Funghi porcini', 7.5),
+    ('Funghi trifolati', 5.5),
+    ('Funghi freschi', 5.5),
+    ('Quattro formaggi', 7),
+    ('Contadina', 8),
+    ('Montanara', 8.5),
+    ('Energica', 9),
+    ('Esplosiva', 9.5),
+    ('Tirolese', 7.5),
+    ('Montebaldo', 7);
 
 -- inserire un ingrediente
 INSERT INTO Ingredienti (nome, prezzo)

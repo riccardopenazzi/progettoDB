@@ -1,0 +1,41 @@
+SELECT utente,
+       AVG(RitardoMedioOrdine1 + RitardoMedioOrdine2 + RitardoMedioOrdine3) / 3 AS MediaRitardoMedio
+FROM (
+    SELECT utente,
+           ordine1,
+           ordine2,
+           ordine3,
+           AVG(TIMESTAMPDIFF(SECOND, orario, orarioEffettivoOrdine1)) AS RitardoMedioOrdine1,
+           AVG(TIMESTAMPDIFF(SECOND, orario, orarioEffettivoOrdine2)) AS RitardoMedioOrdine2,
+           AVG(TIMESTAMPDIFF(SECOND, orario, orarioEffettivoOrdine3)) AS RitardoMedioOrdine3
+    FROM Assegnazioni
+    WHERE orarioEffettivoOrdine1 IS NOT NULL
+       OR orarioEffettivoOrdine2 IS NOT NULL
+       OR orarioEffettivoOrdine3 IS NOT NULL
+    GROUP BY utente, ordine1, ordine2, ordine3
+) AS RitardoMedioTabella
+GROUP BY utente;
+
+
+
+SELECT c.pizza AS Pizza, COUNT(*) AS NumeroOrdini
+FROM Composizioni c
+INNER JOIN Ordini o ON c.ordine = o.codOrdine
+WHERE o.stato = 'Completato' -- Stato dell'ordine completato
+  AND o.orarioEffettuazione BETWEEN '2023-01-01 00:00:00' AND '2023-12-31 23:59:59' -- Intervallo di tempo desiderato
+GROUP BY c.pizza
+ORDER BY NumeroOrdini DESC
+LIMIT 5;
+
+
+
+
+SELECT c.ingrediente AS Ingrediente, COUNT(*) AS NumeroOrdini
+FROM Farciture c
+INNER JOIN Composizioni co ON c.pizza = co.pizza
+INNER JOIN Ordini o ON co.ordine = o.codOrdine
+WHERE o.stato = 'Completato' -- Stato dell'ordine completato
+  AND o.orarioEffettuazione BETWEEN '2023-01-01 00:00:00' AND '2023-12-31 23:59:59' -- Intervallo di tempo desiderato
+GROUP BY c.ingrediente
+ORDER BY NumeroOrdini DESC
+LIMIT 10;
