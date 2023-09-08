@@ -73,6 +73,8 @@ public class ClientePopupCouponController implements Initializable {
                 this.pst.setInt(1, (int) (Double.parseDouble(this.lbPunti.getText()) - this.selectedCoupon.getCosto()));
                 this.pst.setInt(2, User.getCodUtente());
                 this.pst.executeUpdate();
+                this.connect.close();
+                this.pst.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -99,6 +101,8 @@ public class ClientePopupCouponController implements Initializable {
             if (this.rs.next()) {
                 return this.rs.getInt("punti");
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -123,6 +127,8 @@ public class ClientePopupCouponController implements Initializable {
                         this.rs.getBoolean("disponibile"),
                         this.rs.getInt("codCoupon")));
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

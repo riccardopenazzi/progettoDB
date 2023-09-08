@@ -8,10 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -100,7 +97,8 @@ public class AdminMenuManager implements Initializable {
                 tmpPst.setString(2, str);
                 tmpPst.executeUpdate();
             }
-
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,7 +114,9 @@ public class AdminMenuManager implements Initializable {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setDouble(1, Double.parseDouble(this.txtNuovoPrezzo.getText()));
             this.pst.setString(2, this.selectedPizza.getName());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -151,7 +151,9 @@ public class AdminMenuManager implements Initializable {
                 this.pst = this.connect.prepareStatement(query);
                 this.pst.setBoolean(1, flag);
                 this.pst.setString(2, this.selectedPizza.getName());
-                this.pst.executeUpdate();
+                showAl(this.pst.executeUpdate());
+                this.connect.close();
+                this.pst.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -183,6 +185,7 @@ public class AdminMenuManager implements Initializable {
                 list.add(tmp);
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -203,11 +206,28 @@ public class AdminMenuManager implements Initializable {
                 list.add(new Ingrediente(this.rs.getString("nome"), this.rs.getDouble("prezzo")));
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         this.colIng.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.tableIng.setItems(list);
+    }
+
+    public void showAl(int flag) {
+        if (flag > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Modifica effettuata");
+            alert.setHeaderText(null);
+            alert.setContentText("Modifica avvenuta con successo!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore modifica");
+            alert.setHeaderText(null);
+            alert.setContentText("Impossibile eseguire la modifica");
+            alert.showAndWait();
+        }
     }
 
     @Override

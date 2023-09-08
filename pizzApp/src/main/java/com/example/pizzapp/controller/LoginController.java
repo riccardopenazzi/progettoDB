@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,22 +48,39 @@ public class LoginController {
                 User.createUser(this.rs.getInt("codUtente"), this.rs.getString("nome"),
                         this.rs.getString("cognome"), this.rs.getString("email"),
                         this.rs.getString("telefono"), this.rs.getString("tipo"));
-                String fileToLoad = "";
-                if (User.getTipo().equals("pizzaiolo") || User.getTipo().equals("aiuto cuoco")) {
-                    fileToLoad = "/com/example/pizzapp/fxmlFile/cucina/cucinaDashboard.fxml";
-                } else {
-                    fileToLoad = "/com/example/pizzapp/fxmlFile/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
+                if (!User.getTipo().equals("bloccato")) {
+                    String fileToLoad = "";
+                    if (User.getTipo().equals("pizzaiolo") || User.getTipo().equals("aiuto_cuoco")) {
+                        fileToLoad = "/com/example/pizzapp/fxmlFile/cucina/cucinaDashboard.fxml";
+                    } else {
+                        fileToLoad = "/com/example/pizzapp/fxmlFile/" + User.getTipo() + "/" + User.getTipo() + "Dashboard.fxml";
+                    }
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource(fileToLoad));
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        this.bttLogin.getScene().getWindow().hide();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource(fileToLoad));
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    this.bttLogin.getScene().getWindow().hide();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Account bloccato");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Non puoi eseguire il login in quanto il tuo account risulta bloccato. Per " +
+                            "maggiori informazioni contatta l'amministratore.");
+                    alert.showAndWait();
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Account non trovato");
+                alert.setHeaderText(null);
+                alert.setContentText("Non puoi eseguire il login in quanto l'indirizzo email non risulta registrato. Se sei " +
+                        "un nuovo utente registrati.");
+                alert.showAndWait();
             }
             this.pst.close();
             this.connect.close();

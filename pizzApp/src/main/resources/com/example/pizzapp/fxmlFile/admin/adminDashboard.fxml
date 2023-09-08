@@ -10,7 +10,7 @@
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="250.0" style="-fx-background-color: #a6c4f5;">
          <children>
-            <Label fx:id="lbWelcome" layoutX="14.0" layoutY="41.0" prefHeight="17.0" prefWidth="149.0" text="Benvenuto, admin">
+            <Label fx:id="lbWelcome" layoutX="14.0" layoutY="42.0" prefHeight="27.0" prefWidth="236.0" text="Benvenuto, admin">
                <font>
                   <Font size="18.0" />
                </font>
@@ -32,6 +32,16 @@
             </Button>
             <Line endX="100.0" layoutX="101.0" layoutY="68.0" startX="-100.0" stroke="#ffeeee" />
             <Button fx:id="bttCouponManager" layoutX="63.0" layoutY="242.0" mnemonicParsing="false" onAction="#showCouponManager" style="-fx-background-color: #a6c4f5;" text="Gestione coupon">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="65.0" layoutY="655.0" mnemonicParsing="false" onAction="#logout" text="Log out">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="bttCouponManager1" layoutX="63.0" layoutY="282.0" mnemonicParsing="false" onAction="#showCostumerManager" style="-fx-background-color: #a6c4f5;" text="Gestione clienti">
                <font>
                   <Font size="14.0" />
                </font>

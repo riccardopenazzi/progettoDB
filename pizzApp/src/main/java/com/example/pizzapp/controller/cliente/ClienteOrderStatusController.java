@@ -72,6 +72,8 @@ public class ClienteOrderStatusController implements Initializable {
             int orderNum = this.rs.getInt("codOrdine");
             this.lbStatus.setText("Ordine numero: " + orderNum + "\t\t\t\t\t" + "Stato ordine: " + this.rs.getString("stato"));
             popolateCurrentOrder(orderNum);
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -139,6 +141,8 @@ public class ClienteOrderStatusController implements Initializable {
             this.colPastIng.setCellValueFactory(new PropertyValueFactory<>("ingredienti"));
             this.colOrderNumber.setCellValueFactory(new PropertyValueFactory<>("price"));
             this.tabelPastOrder.setItems(list);
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

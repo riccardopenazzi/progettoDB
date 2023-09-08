@@ -7,11 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -90,7 +86,9 @@ public class AdminEmployeeManagementPageController implements Initializable {
             this.pst.setString(4, txtTelefono.getText());
             this.pst.setString(5, txtPassword.getText());
             this.pst.setString(6, txtRuolo.getText());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +102,9 @@ public class AdminEmployeeManagementPageController implements Initializable {
         try {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setInt(1, this.selectedEmployee.getCodice());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -142,6 +142,8 @@ public class AdminEmployeeManagementPageController implements Initializable {
             this.colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
             this.colRuolo.setCellValueFactory(new PropertyValueFactory<>("ruolo"));
             this.tableEmployee.setItems(list);
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -157,6 +159,22 @@ public class AdminEmployeeManagementPageController implements Initializable {
         list.add("Pizzaiolo");
         list.add("Rider");
         this.comboRuolo.setItems(list);
+    }
+
+    public void showAl(int flag) {
+        if (flag > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Modifica effettuata");
+            alert.setHeaderText(null);
+            alert.setContentText("Modifica avvenuta con successo!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore modifica");
+            alert.setHeaderText(null);
+            alert.setContentText("Impossibile eseguire la modifica");
+            alert.showAndWait();
+        }
     }
 
     @Override

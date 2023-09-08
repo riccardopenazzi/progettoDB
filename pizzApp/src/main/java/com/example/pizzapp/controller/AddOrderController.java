@@ -5,7 +5,6 @@ import com.example.pizzapp.model.entities.user.User;
 import com.example.pizzapp.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,21 +27,6 @@ import java.util.ResourceBundle;
 
 public class AddOrderController implements Initializable {
 
-
-//    @FXML
-//    private Button bttAddIndirizzo;
-//
-//    @FXML
-//    private Button bttAddIngredienti;
-//
-//    @FXML
-//    private Button bttAddPizza;
-//
-//    @FXML
-//    private Button bttConfirmOrder;
-//
-//    @FXML
-//    private Button bttRemovePizza;
 
     @FXML
     private Button bttUseCoupon;
@@ -81,9 +64,6 @@ public class AddOrderController implements Initializable {
     @FXML
     private TableView<Orario> tableOrario;
 
-//    @FXML
-//    private ToggleGroup toggleOrderType;
-
     private PreparedStatement pst;
 
     private Connection connect;
@@ -94,17 +74,13 @@ public class AddOrderController implements Initializable {
 
     private String selectedType;
 
-    private List<PizzaAndIngred> pizzaList = new ArrayList<>();
+    private List<PizzaAndIngred> pizzaList;
 
     private Pizza currentSelectedPizza;
 
-    private ObservableList<Pizza> menu;
-
-//    private ObservableList<Ingrediente> ingredientesList;
-
     private Ingrediente currentSelectedIngrediente;
 
-    private List<String> ingredToAdd = new ArrayList<>();
+    private List<String> ingredToAdd;
 
     @FXML
     private ComboBox<Address> comboAddress;
@@ -132,8 +108,6 @@ public class AddOrderController implements Initializable {
             this.pst.setString(3, this.txtComune.getText());
             this.pst.executeUpdate();
             if (!User.getTipo().equals("admin")) {
-                System.out.println("User è: " + User.getTipo());
-                System.out.println("Dato che non è un amministratore inserisco anche in domiciliazioni");
                 String queryDomic = "INSERT INTO Domiciliazioni (utente, via, numero, comune)" +
                         "VALUES (?, ?, ?, ?)";
                 this.pst = this.connect.prepareStatement(queryDomic);
@@ -144,19 +118,21 @@ public class AddOrderController implements Initializable {
                 this.pst.executeUpdate();
             }
             popolateComboBox();
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    void showOrari(ActionEvent event) {
+    void showOrari() {
         this.selectedTime = null;
         this.tableOrario.setItems(null);
         if(this.radioConsegna.isSelected()) {
             this.selectedType = "consegna";
             List<LocalTime> available = FXCollections.observableArrayList(
-                    OrariDisponibili.getList(18, 00, checkNotAvailable()));
+                    OrariDisponibili.getList(LocalTime.now().getHour(), LocalTime.now().getMinute(), checkNotAvailable()));
             List<Orario> tmp = new ArrayList<>();
             for (LocalTime e : available) {
                 tmp.add(new Orario(e));
@@ -167,7 +143,7 @@ public class AddOrderController implements Initializable {
         } else if (this.radioRitiro.isSelected()) {
             this.selectedType = "ritiro";
             List<LocalTime> available = FXCollections.observableArrayList(
-                    OrariDisponibili.getList(18, 00, null));
+                    OrariDisponibili.getList(18, 0, null));
             List<Orario> tmp = new ArrayList<>();
             for (LocalTime e : available) {
                 tmp.add(new Orario(e));
@@ -179,16 +155,16 @@ public class AddOrderController implements Initializable {
     }
 
     @FXML
-    void addIngredienti(ActionEvent event) {
+    void addIngredienti() {
         if (this.currentSelectedIngrediente != null) {
             this.ingredToAdd.add(this.currentSelectedIngrediente.getName());
         }
     }
 
     @FXML
-    void addPizza(ActionEvent event) {
+    void addPizza() {
         if(this.currentSelectedPizza != null) {
-            Double price = 0.0;
+            double price = 0.0;
             String query = "SELECT prezzo FROM Ingredienti WHERE nome = ?";
             this.connect = DatabaseConnection.connectDb();
             try {
@@ -199,26 +175,27 @@ public class AddOrderController implements Initializable {
                     if (this.rs.next()) {
                         price = price + this.rs.getDouble("prezzo");
                     }
-
                 }
+                this.connect.close();
+                this.pst.close();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
             price = price + this.currentSelectedPizza.getPrice();
             this.pizzaList.add(new PizzaAndIngred(this.currentSelectedPizza.getName(), List.copyOf(this.ingredToAdd), price));
             this.ingredToAdd.clear();
-            Double allTotal = 0.0;
+            double allTotal = 0.0;
             for (PizzaAndIngred e : this.pizzaList) {
                 allTotal = allTotal + e.getPrice();
             }
-            this.lbTotal.setText(allTotal.toString());
+            this.lbTotal.setText(Double.toString(allTotal));
         }
     }
 
     @FXML
-    void confirmOrder(ActionEvent event) {
-        Boolean flagSconto = sconto > 0.0;
-        Double allTotal = 0.0;
+    void confirmOrder() {
+        boolean flagSconto = sconto > 0.0;
+        double allTotal = 0.0;
         //inserimento orari
         this.connect = DatabaseConnection.connectDb();
         String queryTempi = "INSERT IGNORE into Tempi (orario) VALUES (?), (?)";
@@ -233,16 +210,8 @@ public class AddOrderController implements Initializable {
             e.printStackTrace();
         }
         //creo ordine
-        String queryInsertOrder = "INSERT INTO Ordini (totale, stato, assegnata, utente, orarioRitiro, orarioEffettuazione, tipo)\n" +
-                "VALUES (\n" +
-                "    ?,\n" +
-                "    'In attesa',\n" +
-                "    FALSE,\n" +
-                "    ?,\n" +
-                "    ?, -- Orario di ritiro\n" +
-                "    ?,  -- Orario di effettuazione\n" +
-                "    ?\n" +
-                ");";
+        String queryInsertOrder = "INSERT INTO Ordini (totale, utente, orarioRitiro, orarioEffettuazione, tipo)\n" +
+                "VALUES (?, ?, ?, ?, ?)";
         try {
             this.pst = this.connect.prepareStatement(queryInsertOrder);
             for (PizzaAndIngred e : this.pizzaList) {
@@ -266,20 +235,22 @@ public class AddOrderController implements Initializable {
             if (gen.next()) {
                 orderId = gen.getInt(1);
             }
-            String queryAddPizza = "INSERT INTO Composizioni (ordine, pizza, ingredienti_array)\n" +
-                    "VALUES (?, ?, ?);\n";
+            String queryAddPizza = """
+                    INSERT INTO Composizioni (ordine, pizza, ingredienti_array)
+                    VALUES (?, ?, ?);
+                    """;
             for (PizzaAndIngred e : pizzaList) {
                 System.out.println("Aggiungo pizza: " + e);
                 this.pst = this.connect.prepareStatement(queryAddPizza);
                 this.pst.setInt(1, orderId);
                 this.pst.setString(2, e.getPizzaName());
-                String strIng = "";
+                StringBuilder strIng = new StringBuilder();
                 for (String str : e.getIngredients()) {
                     System.out.println("Ingrediente: " + str);
-                    strIng = strIng + str + ", ";
+                    strIng.append(str).append(", ");
                 }
                 System.out.println("La stringa degli ingredienti è: " + strIng);
-                this.pst.setString(3, strIng);
+                this.pst.setString(3, strIng.toString());
                 this.pst.executeUpdate();
             }
             if (this.radioConsegna.isSelected()) {
@@ -296,6 +267,8 @@ public class AddOrderController implements Initializable {
             if (!flagSconto) {
                 updatePoint(allTotal);
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -306,13 +279,15 @@ public class AddOrderController implements Initializable {
                 "INNER JOIN Appartenenze AS a ON cf.codCarta = a.cartaFedelta " +
                 "SET cf.punti = ? " +
                 "WHERE a.utente = ?";
-        ;
         this.connect = DatabaseConnection.connectDb();
         try {
             PreparedStatement tmpPst = this.connect.prepareStatement(queryUpdatePoint);
             tmpPst.setInt(1, (int) (getPunti() + tot));
             tmpPst.setInt(2, User.getCodUtente());
             tmpPst.executeUpdate();
+            this.connect.close();
+            this.pst.close();
+            tmpPst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -320,11 +295,12 @@ public class AddOrderController implements Initializable {
 
 
     public int getPunti() {
-        String query = "SELECT C.punti\n" +
-                "FROM Utenti U\n" +
-                "INNER JOIN Appartenenze A ON U.codUtente = A.utente\n" +
-                "INNER JOIN Carte_fedelta C ON A.cartaFedelta = C.codCarta\n" +
-                "WHERE U.codUtente = ?;";
+        String query = """
+                SELECT C.punti
+                FROM Utenti U
+                INNER JOIN Appartenenze A ON U.codUtente = A.utente
+                INNER JOIN Carte_fedelta C ON A.cartaFedelta = C.codCarta
+                WHERE U.codUtente = ?;""";
         this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(query);
@@ -333,6 +309,8 @@ public class AddOrderController implements Initializable {
             if (this.rs.next()) {
                 return this.rs.getInt("punti");
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -340,29 +318,24 @@ public class AddOrderController implements Initializable {
     }
 
     @FXML
-    void removePizza(ActionEvent event) {
-
-    }
-
-    @FXML
-    void selectPizza(MouseEvent event) {
+    void selectPizza() {
         currentSelectedPizza = this.tableMenu.getSelectionModel().getSelectedItem();
-        System.out.println("Stai selezionando " + this.currentSelectedPizza.getName());
     }
 
     @FXML
-    void selectTime(MouseEvent event) {
+    void selectTime() {
         Orario orario = this.tableOrario.getSelectionModel().getSelectedItem();
         this.selectedTime = orario.getOra();
     }
 
     private List<LocalTime> checkNotAvailable() {
         List<LocalTime> toReturn = new ArrayList<>();
-        String query = "SELECT orario, SUM(contatore) AS somma_contatori\n" +
-                "FROM Assegnazioni\n" +
-                "WHERE DATE(orario) = ? -- Sostituisci con la data specifica\n" +
-                "GROUP BY orario\n" +
-                "HAVING SUM(contatore) >= 6;";
+        String query = """
+                SELECT orario, SUM(contatore) AS somma_contatori
+                FROM Assegnazioni
+                WHERE DATE(orario) = ? -- Sostituisci con la data specifica
+                GROUP BY orario
+                HAVING SUM(contatore) >= (SELECT COUNT(*) * 3 FROM Utenti WHERE tipo = 'rider');""";
         this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(query);
@@ -373,6 +346,7 @@ public class AddOrderController implements Initializable {
                 toReturn.add(LocalTime.of(dataCompleta.getHour(), dataCompleta.getMinute()));
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -381,15 +355,18 @@ public class AddOrderController implements Initializable {
 
     public ObservableList<Pizza> readMenu() {
         ObservableList<Pizza> list = FXCollections.observableArrayList();
-        String queryGetName = "SELECT\n" +
-                "    Pizze.nome AS NomePizza,\n" +
-                "    Pizze.prezzoBase AS PrezzoBase,\n" +
-                "    GROUP_CONCAT(Ingredienti.nome SEPARATOR ', ') AS Ingredienti\n" +
-                "FROM Pizze\n" +
-                "LEFT JOIN Farciture ON Pizze.nome = Farciture.pizza\n" +
-                "LEFT JOIN Ingredienti ON Farciture.ingrediente = Ingredienti.nome\n" +
-                "GROUP BY Pizze.nome, Pizze.prezzoBase\n" +
-                "ORDER BY Pizze.nome;\n";
+        String queryGetName = """
+                SELECT
+                    Pizze.nome AS NomePizza,
+                    Pizze.prezzoBase AS PrezzoBase,
+                    GROUP_CONCAT(Ingredienti.nome SEPARATOR ', ') AS Ingredienti
+                FROM Pizze
+                LEFT JOIN Farciture ON Pizze.nome = Farciture.pizza
+                LEFT JOIN Ingredienti ON Farciture.ingrediente = Ingredienti.nome
+                WHERE Pizze.presente = TRUE
+                GROUP BY Pizze.nome, Pizze.prezzoBase
+                ORDER BY Pizze.nome;
+                """;
         this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(queryGetName);
@@ -401,6 +378,7 @@ public class AddOrderController implements Initializable {
                 list.add(tmp);
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -408,9 +386,8 @@ public class AddOrderController implements Initializable {
     }
 
     @FXML
-    void selectAggiunta(MouseEvent event) {
+    void selectAggiunta() {
         this.currentSelectedIngrediente = this.tableAggiunge.getSelectionModel().getSelectedItem();
-        System.out.println("Stai selezionando " + this.currentSelectedIngrediente.getName());
     }
 
     @FXML
@@ -429,11 +406,11 @@ public class AddOrderController implements Initializable {
     }
 
     public void popolateTableMenu() {
-        this.menu = readMenu();
+        ObservableList<Pizza> menu = readMenu();
         this.colNome.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.colIngredienti.setCellValueFactory(new PropertyValueFactory<>("ingredienti"));
         this.colPrezzo.setCellValueFactory(new PropertyValueFactory<>("price"));
-        this.tableMenu.setItems(this.menu);
+        this.tableMenu.setItems(menu);
     }
 
     public void popolateTableIngredienti() {
@@ -447,6 +424,7 @@ public class AddOrderController implements Initializable {
                 list.add(new Ingrediente(this.rs.getString("nome"), this.rs.getDouble("prezzo")));
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -469,6 +447,8 @@ public class AddOrderController implements Initializable {
                 addresses.add(new Address(this.rs.getString("via"), this.rs.getInt("numero"),
                         this.rs.getString("comune")));
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -481,6 +461,8 @@ public class AddOrderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.pizzaList = new ArrayList<>();
+        this.ingredToAdd = new ArrayList<>();
         popolateTableMenu();
         popolateTableIngredienti();
         popolateComboBox();

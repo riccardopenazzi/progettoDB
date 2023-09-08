@@ -2,20 +2,23 @@ package com.example.pizzapp.controller.cucina;
 
 import com.example.pizzapp.model.entities.delivery.Delivery;
 import com.example.pizzapp.model.entities.pizza.Pizza;
+import com.example.pizzapp.model.entities.user.User;
 import com.example.pizzapp.utils.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -94,6 +97,8 @@ public class CucinaDashboardController implements Initializable {
                 LocalDateTime time = (LocalDateTime) this.rs.getObject("orarioRitiro");
                 list.add(new Delivery(this.rs.getInt("codOrdine"), time));
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,6 +126,7 @@ public class CucinaDashboardController implements Initializable {
     public void popolateDettaglio() {
         ObservableList<Pizza> list = FXCollections.observableArrayList();
         String query = "SELECT * FROM Composizioni WHERE ordine = ?";
+        this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setInt(1, this.selectedOrder.getCodOrder());
@@ -133,6 +139,8 @@ public class CucinaDashboardController implements Initializable {
             this.colNome.setCellValueFactory(new PropertyValueFactory<>("name"));
             this.colIng.setCellValueFactory(new PropertyValueFactory<>("ingredienti"));
             this.tableDettaglio.setItems(list);
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -145,7 +153,9 @@ public class CucinaDashboardController implements Initializable {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setString(1, str);
             this.pst.setInt(2, this.selectedOrder.getCodOrder());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -156,5 +166,36 @@ public class CucinaDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.radioDaFare.setSelected(true);
         popolateOrdini();
+    }
+
+    public void showAl(int flag) {
+        if (flag > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Modifica effettuata");
+            alert.setHeaderText(null);
+            alert.setContentText("Modifica avvenuta con successo!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore modifica");
+            alert.setHeaderText(null);
+            alert.setContentText("Impossibile eseguire la modifica");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    void logout(ActionEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/login.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        this.bttSegnaCompletato.getScene().getWindow().hide();
+        stage.show();
     }
 }

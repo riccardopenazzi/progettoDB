@@ -11,7 +11,7 @@ public class OrariDisponibili {
         available.clear();
         int m = startMin;
         int h = startHour;
-        if (h < 18 || h == 18 && m <= 7) {
+        if (h < 18 || h == 18 && m <= 7 || h > 21) {
             h = 18;
             m = 15;
         } else if (startMin >= 0 && startMin < 15) {

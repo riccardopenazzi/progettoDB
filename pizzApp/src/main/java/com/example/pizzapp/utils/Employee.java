@@ -18,6 +18,14 @@ public class Employee {
         this.codice = codice;
     }
 
+    public Employee(String nome, String cognome, String email, int codice, String ruolo) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.codice = codice;
+        this.ruolo = ruolo;
+    }
+
     public String getNome() {
         return nome;
     }

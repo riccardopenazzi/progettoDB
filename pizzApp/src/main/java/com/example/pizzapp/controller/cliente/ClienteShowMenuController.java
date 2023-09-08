@@ -77,6 +77,7 @@ public class ClienteShowMenuController implements Initializable {
                 list.add(tmp);
             }
             this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

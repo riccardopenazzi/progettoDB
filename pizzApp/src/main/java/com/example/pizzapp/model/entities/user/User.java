@@ -64,4 +64,13 @@ public class User {
     public static void setTipo(String tipo) {
         User.tipo = tipo;
     }
+
+    public static void reset() {
+        nome = "";
+        cognome = "";
+        email = "";
+        telefono = "";
+        tipo = "";
+        codUtente = -1;
+    }
 }

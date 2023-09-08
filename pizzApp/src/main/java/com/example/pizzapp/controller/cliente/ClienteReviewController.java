@@ -54,6 +54,8 @@ public class ClienteReviewController implements Initializable {
             this.pst.setString(2, this.txtCommento.getText());
             this.pst.setInt(3, User.getCodUtente());
             this.pst.executeUpdate();
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -73,6 +75,8 @@ public class ClienteReviewController implements Initializable {
                         this.rs.getInt("stelle"),
                         this.rs.getString("commento")));
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

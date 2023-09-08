@@ -2,22 +2,4 @@ Cambiare negli schemi gli identificatori di pizza e ingrediente
 
 Aggiungere campo contatore in assegnazioni negli schemi
 
-Modificare metodo showOrari in clienteAddOrderController togliendo 18 : 00 di default e mettendo orario attuale
-
-Selettore indirizzo in pagina aggiunta ordine
-
-aggiungere clausola where presente = true in mostra menu
-
-chiudere tutte le connessioni
-
-mettere varie finestre dialogo
-
-bottone rimuovi pizza
-
-mostrare consegne solo per la data corrente a rider
-
-Ricerca in pagina menù
-
-Aggiungere un pulsante logout
-
-Counter rider disponibili per limite consegne
+completare accettare consegna in relazione

@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
@@ -106,6 +107,8 @@ public class RiderAvailablePageController implements Initializable {
                 this.pst.setInt(1, this.selectedDelivery.getCodOrder());
                 this.pst.executeUpdate();
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -146,6 +149,8 @@ public class RiderAvailablePageController implements Initializable {
                 this.pst.setObject(3, this.selectedDelivery.getDeliveryTime());
                 this.pst.executeUpdate();
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -155,10 +160,11 @@ public class RiderAvailablePageController implements Initializable {
     public void popolateTable() {
         ObservableList<Delivery> available = FXCollections.observableArrayList();
         if (this.radioShowAvailable.isSelected()) {
-            String query = "SELECT * FROM Ordini WHERE tipo = 'consegna' AND assegnata = false;";
+            String query = "SELECT * FROM Ordini WHERE tipo = 'consegna' AND assegnata = false AND DATE(orarioRitiro) = ?;";
             this.connect = DatabaseConnection.connectDb();
             try {
                 this.pst = this.connect.prepareStatement(query);
+                this.pst.setObject(1, LocalDate.now());
                 this.rs = this.pst.executeQuery();
                 while (this.rs.next()) {
                     //System.out.println("Scorro i risultati");
@@ -246,7 +252,6 @@ public class RiderAvailablePageController implements Initializable {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     @FXML

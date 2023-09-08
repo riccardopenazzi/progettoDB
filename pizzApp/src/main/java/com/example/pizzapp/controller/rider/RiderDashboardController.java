@@ -6,9 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,26 +44,6 @@ public class RiderDashboardController implements Initializable {
         }
     }
 
-    @FXML
-    void showCurrent(ActionEvent event) {
-        try {
-            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/rider/riderCurrentPage.fxml"));
-            setNode(tmp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    void showMade(ActionEvent event) {
-        try {
-            AnchorPane tmp = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/fxmlFile/rider/riderMadePage.fxml"));
-            setNode(tmp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void setNode(Node n) {
         this.mainStage.getChildren().clear();
         this.mainStage.getChildren().add(n);
@@ -69,5 +52,20 @@ public class RiderDashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.lbWelcome.setText("Bentornato " + User.getNome());
+    }
+
+    @FXML
+    void logout(ActionEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/com/example/pizzapp/login.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        this.bttShowAvailable.getScene().getWindow().hide();
+        stage.show();
     }
 }

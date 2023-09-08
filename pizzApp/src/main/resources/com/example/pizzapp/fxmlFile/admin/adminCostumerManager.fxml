@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.admin.AdminCostumerManagerController">
+   <children>
+      <AnchorPane prefHeight="550.0" prefWidth="950.0">
+         <children>
+            <TableView fx:id="tableCostumer" onMouseClicked="#selectCostumer" prefHeight="550.0" prefWidth="950.0">
+              <columns>
+                <TableColumn fx:id="colCod" prefWidth="100.0" text="Codice cliente" />
+                <TableColumn fx:id="colNome" prefWidth="250.0" text="Nome" />
+                  <TableColumn fx:id="colCognome" prefWidth="250.0" text="Cognome" />
+                  <TableColumn fx:id="colEmail" prefWidth="250.0" text="Email" />
+                  <TableColumn fx:id="colTipo" prefWidth="100.0" text="Tipo" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="550.0" prefHeight="150.0" prefWidth="950.0">
+         <children>
+            <Button layoutX="415.0" layoutY="63.0" mnemonicParsing="false" onAction="#blocca" text="Blocca">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="528.0" layoutY="63.0" mnemonicParsing="false" onAction="#sblocca" text="Sblocca">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

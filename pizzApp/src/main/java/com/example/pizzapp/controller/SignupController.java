@@ -116,7 +116,6 @@ public class SignupController {
                 alert.setContentText("Errore nella registrazione, controlla di aver inserito tutti i campi");
                 alert.showAndWait();
             }
-
             this.pst.close();
             this.connect.close();
         } catch (SQLException e) {

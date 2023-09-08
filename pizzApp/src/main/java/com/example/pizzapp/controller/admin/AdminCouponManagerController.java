@@ -24,21 +24,6 @@ public class AdminCouponManagerController implements Initializable {
     private AnchorPane anchorNewCoupon;
 
     @FXML
-    private Button bttAble;
-
-    @FXML
-    private Button bttCreaCoupon;
-
-    @FXML
-    private Button bttDelete;
-
-    @FXML
-    private Button bttDisable;
-
-    @FXML
-    private Button bttShowNewCoupon;
-
-    @FXML
     private CheckBox checkStato;
 
     @FXML
@@ -63,8 +48,6 @@ public class AdminCouponManagerController implements Initializable {
 
     private Connection connect;
 
-    private ResultSet rs;
-
     private Coupon selectedCoupon;
 
     @FXML
@@ -74,7 +57,9 @@ public class AdminCouponManagerController implements Initializable {
         try {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setInt(1, this.selectedCoupon.getCodCoupon());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -90,7 +75,9 @@ public class AdminCouponManagerController implements Initializable {
             this.pst.setDouble(1, Double.parseDouble(this.txtSconto.getText()));
             this.pst.setInt(2, Integer.parseInt(this.txtCosto.getText()));
             this.pst.setBoolean(3, !(this.checkStato.isSelected()));
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -107,7 +94,9 @@ public class AdminCouponManagerController implements Initializable {
         try {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setInt(1, this.selectedCoupon.getCodCoupon());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,7 +110,9 @@ public class AdminCouponManagerController implements Initializable {
         try {
             this.pst = this.connect.prepareStatement(query);
             this.pst.setInt(1, this.selectedCoupon.getCodCoupon());
-            this.pst.executeUpdate();
+            showAl(this.pst.executeUpdate());
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -144,13 +135,15 @@ public class AdminCouponManagerController implements Initializable {
         this.connect = DatabaseConnection.connectDb();
         try {
             this.pst = this.connect.prepareStatement(query);
-            this.rs = this.pst.executeQuery();
-            while (this.rs.next()) {
-                list.add(new Coupon(this.rs.getDouble("sconto"),
-                        this.rs.getInt("puntiRichiesti"),
-                        this.rs.getBoolean("disponibile"),
-                        this.rs.getInt("codCoupon")));
+            ResultSet rs = this.pst.executeQuery();
+            while (rs.next()) {
+                list.add(new Coupon(rs.getDouble("sconto"),
+                        rs.getInt("puntiRichiesti"),
+                        rs.getBoolean("disponibile"),
+                        rs.getInt("codCoupon")));
             }
+            this.connect.close();
+            this.pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -158,6 +151,22 @@ public class AdminCouponManagerController implements Initializable {
         this.colCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
         this.colStato.setCellValueFactory(new PropertyValueFactory<>("attivo"));
         this.tableCoupon.setItems(list);
+    }
+
+    public void showAl(int flag) {
+        if (flag > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Modifica effettuata");
+            alert.setHeaderText(null);
+            alert.setContentText("Modifica avvenuta con successo!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore modifica");
+            alert.setHeaderText(null);
+            alert.setContentText("Impossibile eseguire la modifica");
+            alert.showAndWait();
+        }
     }
 
     @Override

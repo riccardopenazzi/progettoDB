@@ -29,17 +29,17 @@
         </AnchorPane>
         <AnchorPane layoutX="200.0" prefHeight="400.0" prefWidth="400.0">
           <children>
-            <Label fx:id="lbStart" layoutX="120.0" layoutY="206.0" text="Perfavore eseguire il login">
+            <Label fx:id="lbStart" layoutX="118.0" layoutY="206.0" text="Per favore eseguire il login">
               <font>
                 <Font size="14.0" />
               </font>
             </Label>
-            <TextField fx:id="txtEmail" layoutX="114.0" layoutY="235.0" promptText="email">
+            <TextField fx:id="txtEmail" layoutX="76.0" layoutY="235.0" prefWidth="250.0" promptText="email">
               <font>
                 <Font size="14.0" />
               </font>
             </TextField>
-            <Button fx:id="bttLogin" layoutX="114.0" layoutY="316.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="173.0" text="Login">
+            <Button fx:id="bttLogin" layoutX="76.0" layoutY="314.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="250.0" text="Login">
               <font>
                 <Font size="16.0" />
               </font>
@@ -54,7 +54,7 @@
                 <Font size="14.0" />
               </font>
             </Label>
-                  <PasswordField fx:id="txtPassword" layoutX="114.0" layoutY="275.0" prefHeight="25.0" prefWidth="173.0" promptText="password">
+                  <PasswordField fx:id="txtPassword" layoutX="76.0" layoutY="275.0" prefHeight="25.0" prefWidth="250.0" promptText="password">
                      <font>
                         <Font size="14.0" />
                      </font>

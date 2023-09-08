@@ -10,7 +10,7 @@
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="250.0" style="-fx-background-color: #deab99;">
          <children>
-            <Label fx:id="lbWelcome" layoutX="14.0" layoutY="71.0" text="Bentornato cliente">
+            <Label fx:id="lbWelcome" layoutX="8.0" layoutY="70.0" prefHeight="21.0" prefWidth="235.0" text="Bentornato cliente">
                <font>
                   <Font name="Georgia Pro Light" size="18.0" />
                </font>
@@ -26,24 +26,19 @@
                   <Font name="Georgia Pro Light" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bttPastOrder" layoutX="74.0" layoutY="356.0" mnemonicParsing="false" onAction="#showPastOrderPage" style="-fx-background-color: #deab99;" text="Ordini passati">
-               <font>
-                  <Font name="Georgia Pro Light" size="14.0" />
-               </font>
-            </Button>
             <Button fx:id="bttOrderStatus" layoutX="80.0" layoutY="315.0" mnemonicParsing="false" onAction="#showOrderStatusPage" style="-fx-background-color: #deab99;" text="Stato ordine">
                <font>
                   <Font name="Georgia Pro Light" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bttReview" layoutX="44.0" layoutY="446.0" mnemonicParsing="false" onAction="#showReviewPage" style="-fx-background-color: #deab99;" text="Lascia una recensione">
+            <Button fx:id="bttReview" layoutX="52.0" layoutY="360.0" mnemonicParsing="false" onAction="#showReviewPage" style="-fx-background-color: #deab99;" text="Lascia una recensione">
                <font>
                   <Font name="Georgia Pro Light" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bttFedelityCard" layoutX="72.0" layoutY="401.0" mnemonicParsing="false" onAction="#showFedelityCardPage" style="-fx-background-color: #deab99;" text="Carta fedeltà">
+            <Button layoutX="79.0" layoutY="650.0" mnemonicParsing="false" onAction="#logout" text="Log out">
                <font>
-                  <Font name="Georgia Pro Light" size="14.0" />
+                  <Font size="15.0" />
                </font>
             </Button>
          </children>
