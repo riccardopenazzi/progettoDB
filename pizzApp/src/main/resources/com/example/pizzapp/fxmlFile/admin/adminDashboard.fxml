@@ -46,6 +46,11 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button layoutX="79.0" layoutY="322.0" mnemonicParsing="false" onAction="#showStats" style="-fx-background-color: #a6c4f5;" text="Statistiche">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainStage" layoutX="250.0" prefHeight="700.0" prefWidth="950.0" />

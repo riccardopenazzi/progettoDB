@@ -1,3 +1,7 @@
+CREATE DATABASE progetto_db;
+
+USE progetto_db;
+
 -- Creazione della tabella Utenti
 CREATE TABLE Utenti (
     codUtente INT AUTO_INCREMENT PRIMARY KEY,

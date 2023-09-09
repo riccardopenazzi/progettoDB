@@ -9,6 +9,8 @@ public class Employee {
 
     private int codice;
 
+    private double ritardo;
+
     public Employee(String nome, String cognome, String email, String telefono, String ruolo, int codice) {
         this.nome = nome;
         this.cognome = cognome;
@@ -24,6 +26,11 @@ public class Employee {
         this.email = email;
         this.codice = codice;
         this.ruolo = ruolo;
+    }
+
+    public Employee(int codice, double ritardo) {
+        this.codice = codice;
+        this.ritardo = ritardo;
     }
 
     public String getNome() {
@@ -72,5 +79,13 @@ public class Employee {
 
     public void setCodice(int codice) {
         this.codice = codice;
+    }
+
+    public double getRitardo() {
+        return ritardo;
+    }
+
+    public void setRitardo(double ritardo) {
+        this.ritardo = ritardo;
     }
 }

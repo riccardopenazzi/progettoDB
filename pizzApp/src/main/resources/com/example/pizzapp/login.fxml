@@ -15,14 +15,19 @@
       <children>
         <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: red;">
           <children>
-            <Label layoutX="68.0" layoutY="136.0" text="PizzApp" textFill="#fffefe">
+            <Label layoutX="68.0" layoutY="263.0" text="PizzApp" textFill="#fffefe" visible="false">
               <font>
                 <Font size="18.0" />
               </font>
             </Label>
-                  <ImageView fitHeight="85.0" fitWidth="122.0" layoutX="57.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="85.0" fitWidth="122.0" layoutX="57.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@img/pizzaLogin.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="153.0" fitWidth="165.0" layoutX="24.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logo1_nosfondo.png" />
                      </image>
                   </ImageView>
           </children>

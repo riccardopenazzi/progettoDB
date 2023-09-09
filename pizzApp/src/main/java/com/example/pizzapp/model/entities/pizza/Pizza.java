@@ -8,6 +8,8 @@ public class Pizza {
     private Boolean present;
     private List<String> ingredienti;
 
+    private int count;
+
     public Pizza(final String name, final Double price, final List<String> ingredienti){
         this.name = name;
         this.price = price;
@@ -26,6 +28,11 @@ public class Pizza {
         this.ingredienti = ingredienti;
     }
 
+    public Pizza(final String name, final int count) {
+        this.name = name;
+        this.count = count;
+    }
+
     public String getName() {
         return name;
     }
@@ -40,5 +47,9 @@ public class Pizza {
 
     public List<String> getIngredienti() {
         return ingredienti;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

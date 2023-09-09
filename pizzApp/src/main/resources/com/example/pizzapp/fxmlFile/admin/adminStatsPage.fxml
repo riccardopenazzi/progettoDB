@@ -2,72 +2,39 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pizzapp.controller.admin.AdminStatsPageController">
    <children>
-      <AnchorPane prefHeight="700.0" prefWidth="250.0" style="-fx-background-color: #c2e5f2;">
-         <children>
-            <Button layoutX="56.0" layoutY="205.0" mnemonicParsing="false" style="-fx-background-color: #c2e5f2;" text="Ritardo medio rider">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button layoutX="56.0" layoutY="286.0" mnemonicParsing="false" style="-fx-background-color: #c2e5f2;" text="Ritardo medio rider">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button layoutX="62.0" layoutY="247.0" mnemonicParsing="false" style="-fx-background-color: #c2e5f2;" text="Pizze più richieste">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </AnchorPane>
-      <TableView layoutX="250.0" prefHeight="248.0" prefWidth="390.0">
+      <AnchorPane prefHeight="700.0" prefWidth="250.0" style="-fx-background-color: #c2e5f2;" />
+      <TableView fx:id="tableRider" layoutX="250.0" onMouseClicked="#selectRider" prefHeight="248.0" prefWidth="390.0">
         <columns>
-          <TableColumn prefWidth="160.0" text="Nome" />
-          <TableColumn prefWidth="160.0" text="Cognome" />
-            <TableColumn prefWidth="70.0" text="Codice" />
+            <TableColumn fx:id="colCodice" prefWidth="70.0" text="Codice" />
+            <TableColumn fx:id="colRitardo" prefWidth="320.0" text="Ritardo medio" />
         </columns>
       </TableView>
-      <TextField layoutX="653.0" layoutY="14.0" promptText="rider" />
-      <Label layoutX="653.0" layoutY="48.0" prefHeight="17.0" prefWidth="149.0" text="Ritardo medio: " />
-      <Button layoutX="859.0" layoutY="14.0" mnemonicParsing="false" text="Calcola" />
-      <AnchorPane layoutX="250.0" layoutY="278.0" prefHeight="423.0" prefWidth="350.0" style="-fx-background-color: #e9f2f5;">
-         <children>
-            <TableView prefHeight="248.0" prefWidth="350.0" AnchorPane.bottomAnchor="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columns>
-                <TableColumn prefWidth="239.0" text="Pizza" />
-                <TableColumn prefWidth="104.0" text="Numero ordini" />
-              </columns>
-            </TableView>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="594.0" layoutY="277.0" prefHeight="423.0" prefWidth="350.0" style="-fx-background-color: #cbd1d4;">
-         <children>
-            <TableView prefHeight="248.0" prefWidth="350.0">
-              <columns>
-                <TableColumn prefWidth="258.0" text="Ingrediente" />
-                <TableColumn prefWidth="91.0" text="Numero ordini" />
-              </columns>
-            </TableView>
-            <Button layoutX="-26.0" layoutY="325.0" mnemonicParsing="false" text="Calcola">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </AnchorPane>
-      <DatePicker layoutX="715.0" layoutY="223.0" />
-      <Button layoutX="676.0" layoutY="185.0" mnemonicParsing="false" text="Imposta inizio" />
-      <Button layoutX="832.0" layoutY="185.0" mnemonicParsing="false" text="Imposta fine" />
+      <DatePicker fx:id="dateSelector" layoutX="722.0" layoutY="199.0" />
+      <Button layoutX="683.0" layoutY="161.0" mnemonicParsing="false" onAction="#impostaInizio" text="Imposta inizio" />
+      <Button layoutX="839.0" layoutY="161.0" mnemonicParsing="false" onAction="#impostaFine" text="Imposta fine" />
+      <Button layoutX="778.0" layoutY="239.0" mnemonicParsing="false" onAction="#calcolaStat" text="Calcola">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <TableView fx:id="tablePizze" layoutX="250.0" layoutY="315.0" prefHeight="350.0" prefWidth="350.0">
+        <columns>
+          <TableColumn fx:id="colPizza" prefWidth="270.0" text="Pizza" />
+          <TableColumn fx:id="colPizzaNum" text="Oridini" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tableIng" layoutX="599.0" layoutY="315.0" prefHeight="350.0" prefWidth="350.0">
+         <columns>
+            <TableColumn fx:id="colIng" prefWidth="270.0" text="Ingrediente" />
+            <TableColumn fx:id="colIngNum" text="Ordini" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
